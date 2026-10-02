@@ -7,6 +7,21 @@ export function PriceList() {
   return (
     <section id="pricing" aria-labelledby="pricing-heading" className="section-wrapper">
       <div className="container-x">
+        {/* Scarcity alert bar */}
+        <div className="flex items-center gap-3 bg-bmu-red text-white px-4 py-3 mb-5 border-l-4 border-bmu-orange">
+          <span className="text-lg" aria-hidden="true">⚠️</span>
+          <p className="text-[0.85rem] font-bold leading-snug">
+            Only 50 units remaining at the pre-launch price.{" "}
+            <span className="font-black text-bmu-orange-100">
+              Price rises from ₹7,999 → ₹8,499/sq.ft. after launch.
+            </span>{" "}
+            Lock in your unit today before it&apos;s too late.
+          </p>
+          <EnquiryButton className="btn-primary flex-shrink-0 ml-auto whitespace-nowrap text-[0.78rem]">
+            Enquire Now
+          </EnquiryButton>
+        </div>
+
         <div className="section-header-row">
           <div>
             <div className="section-kicker">Investment Details</div>
@@ -19,15 +34,15 @@ export function PriceList() {
         {/* Rate summary strip */}
         <div className="grid sm:grid-cols-3 gap-px bg-bmu-line mb-6">
           {[
-            { label: "Pre-Launch Rate",   value: `₹${PROJECT.pricing.preLaunchRatePerSqft.toLocaleString("en-IN")} / sq.ft.`, note: "Limited period offer", bar: "bg-bmu-orange" },
-            { label: "Post-Launch Rate",  value: `₹${PROJECT.pricing.postLaunchRatePerSqft.toLocaleString("en-IN")} / sq.ft.`, note: "After launch",          bar: "bg-bmu-red-700" },
-            { label: "Bank Loan",         value: `Up to ${PROJECT.pricing.bankLoanUptoPercent}%`, note: "Via empanelled banks",  bar: "bg-bmu-green-600" },
+            { label: "Pre-Launch Rate",   value: `₹${PROJECT.pricing.preLaunchRatePerSqft.toLocaleString("en-IN")} / sq.ft.`, note: "⚡ Book NOW — limited units", bar: "bg-bmu-orange" },
+            { label: "Post-Launch Rate",  value: `₹${PROJECT.pricing.postLaunchRatePerSqft.toLocaleString("en-IN")} / sq.ft.`, note: "Price after launch — act before!", bar: "bg-bmu-red-700" },
+            { label: "Bank Loan",         value: `Up to ${PROJECT.pricing.bankLoanUptoPercent}%`, note: "Low down payment — apply today", bar: "bg-bmu-green-600" },
           ].map((r) => (
             <div key={r.label} className="bg-white overflow-hidden">
               <div className={`card-header-bar ${r.bar}`}>{r.label}</div>
               <div className="p-4">
                 <div className="stat-value-lg">{r.value}</div>
-                <div className="text-[0.75rem] text-bmu-muted mt-0.5">{r.note}</div>
+                <div className="text-[0.75rem] text-bmu-muted mt-0.5 font-semibold">{r.note}</div>
               </div>
             </div>
           ))}
@@ -95,6 +110,7 @@ export function PriceList() {
 
         <p className="text-[0.72rem] text-bmu-muted mt-4">
           * Prices are indicative and subject to change. Government charges and applicable taxes extra.
+          Pre-launch rate valid for limited bookings only — secure yours before the price revision.
         </p>
       </div>
     </section>

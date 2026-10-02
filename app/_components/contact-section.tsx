@@ -3,15 +3,10 @@
 import { EnquiryButton } from "@/app/_components/enquiry-trigger";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { PROJECT } from "@/app/_data/project";
-import { whatsappChatLink, formatPhoneHref } from "@/app/_lib/utils";
 import { Reveal } from "@/app/_components/reveal-hooks";
 
 export function ContactSection() {
   const { contact } = PROJECT;
-  const waLink = whatsappChatLink(
-    contact.whatsapp,
-    `Hello, I am interested in ${PROJECT.name} on Goverdhan Road, Barsana. Please share details.`
-  );
   const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(contact.mapQuery)}&output=embed&z=14`;
 
   return (
@@ -40,22 +35,19 @@ export function ContactSection() {
                     ))}</div>
                   )},
                   { Icon: Phone, label: "Phone", content: (
-                    <a href={formatPhoneHref(contact.phonePrimary)}
-                      className="text-[0.9rem] font-semibold text-bmu-ink hover:text-bmu-red transition-colors">
+                    <span className="text-[0.9rem] font-semibold text-bmu-ink">
                       {contact.phonePrimary}
-                    </a>
+                    </span>
                   )},
                   { Icon: Mail, label: "Email", content: (
-                    <a href={`mailto:${contact.email}`}
-                      className="text-[0.9rem] font-semibold text-bmu-ink hover:text-bmu-red transition-colors break-all">
+                    <span className="text-[0.9rem] font-semibold text-bmu-ink break-all">
                       {contact.email}
-                    </a>
+                    </span>
                   )},
                   { Icon: MessageCircle, label: "WhatsApp", content: (
-                    <a href={waLink} target="_blank" rel="noopener noreferrer"
-                      className="text-[0.9rem] font-semibold text-bmu-ink hover:text-bmu-red transition-colors">
-                      Chat on WhatsApp
-                    </a>
+                    <span className="text-[0.9rem] font-semibold text-bmu-ink">
+                      {contact.whatsapp}
+                    </span>
                   )},
                 ].map(({ Icon, label, content }) => (
                   <div key={label} className="contact-info-row px-4">
@@ -69,13 +61,14 @@ export function ContactSection() {
               </div>
             </div>
 
+            {/* All CTAs open enquiry modal */}
             <div className="flex flex-wrap gap-2">
-              <a href={formatPhoneHref(contact.phonePrimary)} className="btn-secondary">
+              <EnquiryButton className="btn-secondary">
                 <Phone size={13} aria-hidden="true" /> Call Now
-              </a>
-              <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn-outline">
+              </EnquiryButton>
+              <EnquiryButton className="btn-outline">
                 <MessageCircle size={13} aria-hidden="true" /> WhatsApp
-              </a>
+              </EnquiryButton>
               <EnquiryButton className="btn-outline">Submit Enquiry</EnquiryButton>
             </div>
           </Reveal>

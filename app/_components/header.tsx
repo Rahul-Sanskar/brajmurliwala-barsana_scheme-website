@@ -5,11 +5,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, X, Phone, FileText } from "lucide-react";
 import { NAV_ANCHORS, PROJECT } from "@/app/_data/project";
-import { cn, formatPhoneHref } from "@/app/_lib/utils";
+import { cn } from "@/app/_lib/utils";
+import { useEnquiry } from "@/app/_components/enquiry-trigger";
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { open: openEnquiry } = useEnquiry();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
@@ -74,13 +76,14 @@ export function Header() {
 
             {/* Right CTAs */}
             <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-              <a
-                href={formatPhoneHref(PROJECT.contact.phonePrimary)}
+              <button
+                type="button"
+                onClick={openEnquiry}
                 className="hidden xl:flex items-center gap-1.5 text-[0.72rem] font-medium text-white/70 hover:text-white transition-colors"
               >
                 <Phone size={13} aria-hidden="true" />
                 {PROJECT.contact.phonePrimary}
-              </a>
+              </button>
               <a
                 href="#application"
                 className="btn-apply"
@@ -159,14 +162,14 @@ export function Header() {
 
           {/* Mobile CTAs */}
           <div className="px-4 pt-4 pb-5 flex flex-col gap-2.5 border-t border-white/15">
-            <a
-              href={formatPhoneHref(PROJECT.contact.phonePrimary)}
+            <button
+              type="button"
+              onClick={() => { openEnquiry(); setOpen(false); }}
               className="flex items-center justify-center gap-2 py-2.5 border border-white/25 text-white text-[0.82rem] font-semibold hover:bg-white/10 transition-colors"
-              onClick={() => setOpen(false)}
             >
               <Phone size={15} aria-hidden="true" />
               {PROJECT.contact.phonePrimary}
-            </a>
+            </button>
             <a
               href="#application"
               className="btn-apply"

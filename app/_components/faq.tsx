@@ -34,12 +34,9 @@ export function FAQ() {
                 Our team is available to answer any queries about the project.
               </p>
               <div className="flex flex-col gap-2">
-                <a
-                  href={`tel:${PROJECT.contact.phonePrimary.replace(/\s/g, "")}`}
-                  className="btn-secondary text-center"
-                >
-                  Call Us
-                </a>
+                <EnquiryButton className="btn-secondary text-center">
+                  Talk to Our Team
+                </EnquiryButton>
                 <EnquiryButton className="btn-outline text-center">
                   Submit Enquiry
                 </EnquiryButton>

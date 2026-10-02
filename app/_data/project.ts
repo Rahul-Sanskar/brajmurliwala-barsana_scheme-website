@@ -62,6 +62,12 @@ export type HeroSlide = {
   src: string;
   alt: string;
   message: string;
+  /** Optional per-slide overrides — if omitted, global PROJECT values are used */
+  kicker?: string;
+  title?: string;
+  location?: string;
+  ctaPrimary?: string;
+  ctaSecondary?: string;
 };
 
 /**
@@ -176,29 +182,49 @@ export const PROJECT = {
 
   heroSlides: [
     {
+      /* ── SLIDE 1 — Hindi ── */
       src: "/braj/hero/1-elevation-day.png",
       alt: "Braj Murliwala Residency elevation on Goverdhan Road, Barsana — daytime view",
-      message: "1, 2 & 3 BHK Residences — Pre-Launch at ₹7,999/sq.ft.",
+      kicker: "बरसाना अर्बन हाउसिंग स्कीम",
+      title: "ब्रज मुरलीवाला रेजीडेंसी",
+      location: "गोवर्धन रोड, बरसाना",
+      message: "⚠️ केवल 50 यूनिट बचे हैं — जल्दी करें!\nश्री राधा रानी की नगरी में अपना घर पाएं।\nमंदिर, कीर्ति मंदिर और बस स्टैंड के बिल्कुल पास।",
+      ctaPrimary: "अभी आवेदन करें",
+      ctaSecondary: "प्रोजेक्ट देखें",
     },
     {
+      /* ── SLIDE 2 — English ── */
       src: "/braj/hero/2-elevation-night.png",
       alt: "Braj Murliwala Residency illuminated night elevation — Goverdhan Road, Barsana",
-      message: "Modern Residences in the Spiritual Heart of Braj",
+      message: "Only 50 units remaining — selling fast!\nSecure your home in the divine city of Shree Radha Rani.\nPre-launch rate ₹7,999/sq.ft. — rising after launch.",
     },
     {
+      /* ── SLIDE 3 — Hindi ── */
       src: "/braj/hero/3-elevation-side.png",
       alt: "Braj Murliwala Residency side elevation view — residential project in Barsana",
-      message: "Bank Loan up to 90% — Fully Furnished Options Available",
+      kicker: "बरसाना अर्बन हाउसिंग स्कीम",
+      title: "ब्रज मुरलीवाला रेजीडेंसी",
+      location: "गोवर्धन रोड, बरसाना",
+      message: "बैंक लोन 90% तक उपलब्ध है।\nप्री-लॉन्च रेट सिर्फ ₹7,999/sq.ft. — देर मत करें!\n1, 2 और 3 BHK अपार्टमेंट — अभी बुक करें।",
+      ctaPrimary: "अभी आवेदन करें",
+      ctaSecondary: "प्रोजेक्ट देखें",
     },
     {
+      /* ── SLIDE 4 — English ── */
       src: "/braj/hero/4-furnished.png",
       alt: "Furnished apartment interior at Braj Murliwala Residency, Barsana",
-      message: "Premium Branded Fittings — Furnished Apartment Options Available",
+      message: "Premium furnished apartments — 1, 2 & 3 BHK.\nSteps from Shree Radha Rani Mandir & Kirti Mandir.\nBank loan up to 90% — apply today!",
     },
     {
+      /* ── SLIDE 5 — Hindi ── */
       src: "/braj/hero/5-barsana.png",
       alt: "Goverdhan Road, Barsana — location of Braj Murliwala Residency",
-      message: "Located on Goverdhan Road, 1.5 km from Barsana Bus Stand",
+      kicker: "बरसाना अर्बन हाउसिंग स्कीम",
+      title: "ब्रज मुरलीवाला रेजीडेंसी",
+      location: "गोवर्धन रोड, बरसाना",
+      message: "श्री राधा रानी की नगरी — बरसाना में अपना घर!\nसिर्फ 50 यूनिट बचे हैं — पहले आएं, पहले पाएं।\nआज ही संपर्क करें।",
+      ctaPrimary: "अभी आवेदन करें",
+      ctaSecondary: "प्रोजेक्ट देखें",
     },
   ] as HeroSlide[],
 
@@ -224,32 +250,33 @@ export const PROJECT = {
   ] as Amenity[],
 
   highlights: [
+    "⚠️ Only 50 Units Left — Act Fast!",
     "1, 2 & 3 BHK Modern Apartment Layouts",
-    "Premium branded fittings",
-    "Ready-to-Move positioning",
-    "Fully furnished apartment options available",
-    "Located on Goverdhan Road, Barsana",
-    "Spiritual Braj region address",
-    "Potential for rental / Airbnb income",
+    "Pre-launch ₹7,999/sq.ft. — rises to ₹8,499 after launch",
+    "Premium branded fittings — Ready-to-Move",
+    "Fully furnished options — limited inventory",
+    "Steps from Shree Radha Rani Mandir & Kirti Mandir",
+    "Potential for rental / Airbnb income — high pilgrim footfall",
+    "Bank loan up to 90% — apply TODAY",
   ],
 
   overview: [
-    "Har din Radha Rani ke aashirwad ke saath apni zindagi ki nai shuruaat kijiye. Braj Murliwala presents Barsana me Goverdhan Road par, pahla Ready-to-Move Ultra Luxury Society Apartments — 1, 2 & 3 BHK homes with premium branded fittings aur world-class amenities.",
-    "Yeh RERA-approved project Shri Radha Rani aur Kirti Mandir se close, Barsana Bus Stand se 1.5 km ki doori par hai. Bank loan up to 90%, aur pre-launch price sirf ₹7,999 per sq. ft., jo launch ke baad ₹8,499 per sq. ft. ho jayegi. Chahe apne liye ek peaceful spiritual home ho ya Airbnb aur rental income ke saath smart investment, yeh ek perfect opportunity hai. Limited period pre-launch offer ka fayda uthaiye.",
+    "⚡ Sirf 50 units bache hain — jaldi kijiye! Har din Radha Rani ke aashirwad ke saath apni zindagi ki nai shuruaat kijiye. Braj Murliwala presents Barsana ke Goverdhan Road par, pahla Ready-to-Move Ultra Luxury Society Apartments — 1, 2 & 3 BHK homes with premium branded fittings aur world-class amenities.",
+    "Yeh RERA-approved project Shri Radha Rani aur Kirti Mandir se bilkul close, Barsana Bus Stand se sirf 1.5 km ki doori par hai. Bank loan up to 90%, aur pre-launch price SIRF ₹7,999 per sq. ft. — jo launch ke baad ₹8,499 per sq. ft. ho jayegi. Jitna zyada wait karenge, utna zyada paisa lagega. Chahe apne liye ek peaceful spiritual home ho ya Airbnb aur rental income ke saath smart investment — yeh opportunity phir nahi aayegi. Abhi apply karein.",
   ],
 
   aboutContent: {
     heading: "About Braj Murliwala Residency",
     paragraphs: [
-      "Braj Murliwala Residency is a multi-storey residential project on Goverdhan Road, Barsana — situated in Shridham Barsana, one of the most significant pilgrimage towns of the Braj region, Uttar Pradesh.",
-      "The project offers 1 BHK, 2 BHK, and 3 BHK apartments designed for modern residential living. Each home is built with premium branded fittings and supported by a full range of community amenities including a swimming pool, gymnasium, temple, landscaped park, and 24-hour power backup.",
-      "Developed by SKG Infratech — the developer group behind the established Murliwala Group of Hotels and Restaurants in the Braj region — the project is positioned as a well-planned residential community for families, pilgrims, and investors looking for a home in Barsana.",
+      "Braj Murliwala Residency is a multi-storey residential project on Goverdhan Road, Barsana — situated in Shridham Barsana, the birthplace of Shri Radha Rani and one of the most significant pilgrimage towns of the Braj region, Uttar Pradesh. With only 50 units available, this is a once-in-a-lifetime chance to own a home in this sacred city.",
+      "The project offers 1 BHK, 2 BHK, and 3 BHK apartments designed for modern residential living. Each home is built with premium branded fittings and supported by world-class amenities including a swimming pool, gymnasium, temple within campus, landscaped park, and 24-hour power backup. The pre-launch rate of ₹7,999/sq.ft. is a limited-period offer — it rises to ₹8,499/sq.ft. after launch.",
+      "Developed by SKG Infratech — the group behind the established Murliwala Hotels and Restaurants in Braj — this is a trusted, RERA-approved project. Bank loan assistance up to 90% is available. Every day without booking is money left on the table. Secure your home today.",
     ],
     points: [
-      "1 BHK, 2 BHK and 3 BHK configurations",
-      "Bank loan assistance up to 90%",
-      "Fully furnished apartment options available",
-      "Located on Goverdhan Road, approx. 1.5 km from Barsana Bus Stand",
+      "⚠️ Only 50 units available — selling fast",
+      "Pre-launch ₹7,999/sq.ft. — rising to ₹8,499 after launch",
+      "Bank loan up to 90% — apply now",
+      "Steps from Shree Radha Rani Mandir, Kirti Mandir & Bus Stand",
     ],
   },
 
@@ -395,66 +422,70 @@ export const PROJECT = {
   faq: [
     {
       q: "Where is Braj Murliwala Residency located?",
-      a: "Braj Murliwala Residency is located on Goverdhan Road, Barsana, Mathura district, Uttar Pradesh. The project is approximately 1.5 km from Barsana Bus Stand.",
+      a: "Braj Murliwala Residency is on Goverdhan Road, Barsana — the divine city of Shree Radha Rani, Mathura district, UP. Just 1.5 km from Barsana Bus Stand, steps from Radha Rani Mandir and Kirti Mandir. There is no better address in Braj.",
+    },
+    {
+      q: "How many units are left?",
+      a: "Only 50 units remain in this pre-launch offering. Units are being booked quickly. Once they are gone, this opportunity is gone forever. Do not wait — enquire or apply now.",
     },
     {
       q: "What configurations are available?",
-      a: "The project offers 1 BHK, 2 BHK, and 3 BHK apartments. All configurations are available for enquiry.",
-    },
-    {
-      q: "What is the area range for each configuration?",
-      a: "1 BHK: 881–895 sq. ft. | 2 BHK: 1,395–1,675 sq. ft. | 3 BHK: 1,916–1,982 sq. ft. (Super Built-Up Area)",
+      a: "1 BHK (881–895 sq.ft.), 2 BHK (1,395–1,675 sq.ft.), and 3 BHK (1,916–1,982 sq.ft.) — all available right now at the pre-launch rate. Act before they sell out.",
     },
     {
       q: "What is the current price per sq. ft.?",
-      a: "The pre-launch price is ₹7,999 per sq. ft. This is a limited-period offer valid for early bookings. Post-launch the rate will be ₹8,499 per sq. ft.",
+      a: "Pre-launch price is ₹7,999/sq.ft. — this is a strictly limited-period offer. After launch the rate rises to ₹8,499/sq.ft. Every day you wait costs you ₹500 more per sq.ft. Lock in today.",
     },
     {
       q: "What is the starting price?",
-      a: "Starting from ₹74 Lakh for a 1 BHK apartment at the pre-launch rate. Prices for 2 BHK and 3 BHK configurations are available on enquiry.",
+      a: "Starting from just ₹74 Lakh for a 1 BHK at the pre-launch rate — with bank loan up to 90%, your down payment could be as low as ₹7–8 Lakh. This is your most affordable window. 2 BHK and 3 BHK pricing on enquiry.",
     },
     {
       q: "Is the project RERA-approved?",
-      a: "Yes, the project is RERA-approved. The RERA registration number will be published here once officially confirmed. You may request it directly from the developer.",
-    },
-    {
-      q: "What is the expected possession date?",
-      a: "The possession timeline will be provided by the developer. Please enquire directly for the latest update on possession.",
+      a: "Yes — the project is RERA-approved, giving you complete legal security and peace of mind. Buy with full confidence.",
     },
     {
       q: "Are furnished flat options available?",
-      a: "Yes. Fully furnished apartment options are available. Please enquire for the furnished package details and pricing.",
-    },
-    {
-      q: "Is parking included?",
-      a: "The project provides common car parking. Dedicated/covered parking availability should be confirmed at the time of booking.",
-    },
-    {
-      q: "What amenities does the project offer?",
-      a: "The project includes Swimming Pool, Gymnasium, Temple, Landscaped Park, CCTV Surveillance, Boom Barrier, High-Speed Lifts, Intercom, Fire Safety, 100% Power Backup for common areas, Wi-Fi/DTH provision, Community Center, Kids Play Zone, Yoga area, Senior Citizen Corner, Rainwater Harvesting, and Sewage Treatment Plant.",
+      a: "Yes — fully furnished apartment options are available, but inventory is limited. Enquire immediately to check availability for your preferred configuration.",
     },
     {
       q: "Is bank loan available?",
-      a: "Yes. Bank loan assistance of up to 90% is available through tie-up banks. Please enquire for a list of empanelled banks.",
+      a: "Yes — bank loan up to 90% is available through empanelled banks. That means you can own a home in the city of Shree Radha Rani with minimal upfront investment. Call us today to get started.",
+    },
+    {
+      q: "What amenities does the project offer?",
+      a: "Swimming Pool, Gymnasium, Temple within campus, Landscaped Park, CCTV, Boom Barrier, High-Speed Lifts, Intercom, Fire Safety, 100% Power Backup, Wi-Fi/DTH, Community Center, Kids Play Zone, Yoga area, Senior Citizen Corner, Rainwater Harvesting, STP — all within your community.",
+    },
+    {
+      q: "What is the expected possession date?",
+      a: "Possession timeline will be confirmed by the developer. Pre-launch buyers get priority possession. Enquire now for the latest update.",
+    },
+    {
+      q: "Is parking included?",
+      a: "Yes — common car parking is provided. Dedicated/covered parking availability should be confirmed at booking. Limited slots available.",
     },
     {
       q: "How can I schedule a site visit?",
-      a: "Site visits can be scheduled on all days via prior enquiry. Please call +91 87966 22722 or fill the enquiry form on this page.",
+      a: "Site visits are available every day. Call +91 87966 22722 NOW or fill the enquiry form below. Seeing is believing — visit and book same day.",
     },
   ] as FaqItem[],
 
   notices: [
-    "Pre-Launch price of ₹7,999/- per sq. ft. valid for limited bookings only.",
-    "Site visits can be scheduled on all days via prior enquiry.",
-    "Bank loan assistance up to 90% available through empanelled banks.",
-    "Furnished apartment options available — enquire for details.",
+    "⚠️ ONLY 50 UNITS REMAINING — Selling fast, act now before they're gone!",
+    "Pre-Launch price ₹7,999/sq.ft. — price RISES to ₹8,499 after launch. Lock in now!",
+    "🔥 Pre-launch offer closes soon — every day of delay costs you ₹500/sq.ft. more.",
+    "Bank loan up to 90% available — apply today, move in to the city of Shree Radha Rani.",
+    "Site visits available daily — call +91 87966 22722 to book yours NOW.",
+    "Furnished apartment options available — limited inventory, first-come first-served.",
+    "Don't regret missing out — neighbours of Shree Radha Rani Mandir & Kirti Mandir.",
+    "₹21,000 blocks your unit — secure your home before someone else does.",
   ],
 
   snapshot: [
-    { label: "Configuration", value: "1 / 2 / 3 BHK", sub: "881–1982 sq. ft.", icon: "LayoutGrid" },
-    { label: "Location",      value: "Goverdhan Road",   sub: "Barsana, Mathura", icon: "MapPin" },
-    { label: "Starting Price", value: "₹74 Lakh", sub: "Pre-launch ₹7,999/sq. ft.", icon: "Banknote" },
-    { label: "Project", value: "Braj Murliwala Residency", sub: "Barsana Housing Scheme", icon: "Building2" },
+    { label: "Units Remaining", value: "Only 50 Left", sub: "Selling fast — act now!", icon: "AlertTriangle" },
+    { label: "Location",        value: "Goverdhan Road", sub: "Barsana — City of Shree Radha Rani", icon: "MapPin" },
+    { label: "Pre-Launch Price", value: "₹74 Lakh+", sub: "₹7,999/sq.ft. — rising soon", icon: "Banknote" },
+    { label: "Project",         value: "Braj Murliwala Residency", sub: "Barsana Housing Scheme", icon: "Building2" },
   ],
 
   /**
@@ -510,25 +541,25 @@ export const PROJECT = {
       icon: "MapPin",
       title: "Prime Spiritual Location",
       detail:
-        "Situated on Goverdhan Road in Barsana — the birthplace of Shri Radha Rani. Close proximity to Radha Rani Temple, Kirti Mandir and Goverdhan.",
+        "Steps from Shree Radha Rani Mandir, Kirti Mandir & Barsana Bus Stand — own a home in the divine city of Shree Radha Rani. A once-in-a-lifetime address.",
     },
     {
       icon: "Banknote",
-      title: "Accessible Financing",
+      title: "Pre-Launch Price — Act NOW",
       detail:
-        "Bank loan assistance of up to 90% available through empanelled banks. Pre-launch rate of ₹7,999/sq.ft. — limited period offer.",
+        "Lock in at just ₹7,999/sq.ft. before the price rises to ₹8,499. Every day of delay costs you ₹500 more per sq.ft. Bank loan up to 90% available.",
     },
     {
       icon: "Home",
-      title: "Furnished Options",
+      title: "Only 50 Units — Going Fast",
       detail:
-        "Fully furnished apartment packages available across all configurations — 1 BHK, 2 BHK, and 3 BHK. Move in without the hassle.",
+        "Only 50 homes available in this exclusive launch. Furnished options available across all configurations. First come, first served — don't miss your unit.",
     },
     {
       icon: "Building2",
-      title: "Complete Community",
+      title: "World-Class Amenities",
       detail:
-        "Swimming pool, gymnasium, temple, landscaped parks, 24×7 power backup, CCTV, high-speed lifts and more — all within the campus.",
+        "Swimming pool, gymnasium, temple within campus, landscaped parks, 24×7 power backup, CCTV, high-speed lifts — everything included. Ready to move in.",
     },
   ],
 };

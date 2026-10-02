@@ -93,7 +93,7 @@ export function ApplicationSection() {
 
   return (
     <section id="application" aria-labelledby="app-heading" className="app-section">
-      {/* ── Heading bar ─────────────────────────────────────────── */}
+      {/* ── Urgency bar ─────────────────────────────────────────── */}
       <div style={{ background: "rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
         <div className="container-x flex items-center justify-between py-2.5">
           <div className="flex items-center gap-2.5">
@@ -105,7 +105,7 @@ export function ApplicationSection() {
           {isOpen ? (
             <span className="app-status-open">
               <span className="app-status-dot" aria-hidden="true" />
-              Applications Open
+              Applications Open — Only 50 Units Left
             </span>
           ) : (
             <span className="app-status-closed">
@@ -123,12 +123,22 @@ export function ApplicationSection() {
           {/* Pane 1 — Apply CTA */}
           <div className="app-pane flex flex-col justify-center gap-3"
                style={{ background: "#fff" }}>
+            {/* Scarcity badge */}
+            {isOpen && (
+              <div className="flex items-center gap-2 bg-red-50 border border-red-200 px-3 py-2">
+                <AlertTriangle size={14} className="text-bmu-red flex-shrink-0" aria-hidden="true" />
+                <span className="text-[0.75rem] font-bold text-bmu-red">
+                  Only 50 units remaining — selling fast!
+                </span>
+              </div>
+            )}
             <h2 id="app-heading" className="font-bold text-bmu-ink leading-tight"
               style={{ fontSize: "clamp(1.15rem, 1.8vw, 1.45rem)" }}>
-              Apply for Your Home
+              Secure Your Home Today
             </h2>
             <p className="text-bmu-muted text-[0.85rem] leading-relaxed">
-              Submit your application for {PROJECT.name},&nbsp;{PROJECT.location.short}.
+              Don&apos;t miss the pre-launch rate of ₹7,999/sq.ft. — price rises to ₹8,499 after launch.
+              Reserve your unit at {PROJECT.name},&nbsp;{PROJECT.location.short} right now.
             </p>
 
             <button
@@ -144,7 +154,7 @@ export function ApplicationSection() {
               ) : !isOpen ? (
                 <><Lock size={14} aria-hidden="true" /> Applications Closed</>
               ) : (
-                <><FileText size={14} aria-hidden="true" /> Apply Now</>
+                <><FileText size={14} aria-hidden="true" /> Apply Now — Block Your Unit</>
               )}
             </button>
 
@@ -168,8 +178,8 @@ export function ApplicationSection() {
             </div>
             <div className="h-0.5 w-8 bg-bmu-orange mt-0.5" />
             <p className="text-bmu-muted text-[0.78rem] leading-relaxed mt-1">
-              One-time application fee.<br />
-              Subject to project terms.
+              One-time refundable application fee blocks your unit.{" "}
+              <span className="font-semibold text-bmu-ink">Act now before someone else takes it.</span>
             </p>
             <div className="flex flex-col gap-1 mt-1">
               <div className="flex items-center gap-1.5 text-[0.72rem] text-bmu-muted">
