@@ -405,27 +405,6 @@ export const PROJECT = {
       file: "/braj/bmw khasra map.pdf",
     },
     {
-      id: "brochure",
-      title: "Project Brochure",
-      description: "Complete project overview including elevations, floor plans, amenities and pricing.",
-      type: "Brochure",
-      available: false,
-    },
-    {
-      id: "floor-plan",
-      title: "Floor Plan Compilation",
-      description: "Detailed floor plans for all configurations — 1 BHK, 2 BHK, and 3 BHK.",
-      type: "PDF",
-      available: false,
-    },
-    {
-      id: "payment-plan",
-      title: "Payment Plan",
-      description: "Construction-linked and down-payment schedule with financing options.",
-      type: "PDF",
-      available: false,
-    },
-    {
       id: "spec-sheet",
       title: "Specification Sheet",
       description: "Detailed specifications for structure, finishes, fittings and amenities.",
