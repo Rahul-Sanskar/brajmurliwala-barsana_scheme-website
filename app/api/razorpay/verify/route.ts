@@ -18,8 +18,20 @@ import crypto from "crypto";
 
 export const runtime = "nodejs";
 
+const ALLOWED_ORIGINS = new Set([
+  "https://www.brajmurliwala.online",
+  "https://brajmurliwala.online",
+  "http://localhost:3000",
+]);
+
 export async function POST(request: Request): Promise<Response> {
   try {
+    /* ── CSRF: Origin check ───────────────────────────────────── */
+    const origin = request.headers.get("origin") ?? "";
+    if (!ALLOWED_ORIGINS.has(origin)) {
+      return Response.json({ success: false, error: "Forbidden." }, { status: 403 });
+    }
+
     /* ── 1. Validate env ──────────────────────────────────────── */
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
@@ -56,17 +68,23 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     /* ── 3. Verify HMAC-SHA256 signature ─────────────────────── */
-    // Razorpay signature = HMAC_SHA256(order_id + "|" + payment_id, key_secret)
     const body_str = `${razorpay_order_id}|${razorpay_payment_id}`;
     const expectedSignature = crypto
       .createHmac("sha256", keySecret)
       .update(body_str)
       .digest("hex");
 
-    const isValid = crypto.timingSafeEqual(
-      Buffer.from(expectedSignature, "hex"),
-      Buffer.from(razorpay_signature, "hex")
-    );
+    // Guard: both buffers must be same length for timingSafeEqual
+    let isValid = false;
+    try {
+      const expected = Buffer.from(expectedSignature, "hex");
+      const received = Buffer.from(razorpay_signature, "hex");
+      if (expected.length === received.length) {
+        isValid = crypto.timingSafeEqual(expected, received);
+      }
+    } catch {
+      isValid = false;
+    }
 
     if (!isValid) {
       console.warn("[verify] Signature mismatch for order:", razorpay_order_id);

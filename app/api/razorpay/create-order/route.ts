@@ -14,11 +14,22 @@
 import Razorpay from "razorpay";
 import { CONFIG } from "@/app/_data/project";
 
-// Enforce server-only — this file must never be bundled into the client.
 export const runtime = "nodejs";
+
+const ALLOWED_ORIGINS = new Set([
+  "https://www.brajmurliwala.online",
+  "https://brajmurliwala.online",
+  "http://localhost:3000",
+]);
 
 export async function POST(request: Request): Promise<Response> {
   try {
+    /* ── CSRF: Origin check ───────────────────────────────────── */
+    const origin = request.headers.get("origin") ?? "";
+    if (!ALLOWED_ORIGINS.has(origin)) {
+      return Response.json({ error: "Forbidden." }, { status: 403 });
+    }
+
     /* ── 1. Validate env ──────────────────────────────────────── */
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
