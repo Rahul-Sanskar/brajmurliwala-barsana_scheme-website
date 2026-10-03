@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { PROJECT } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
 import { Reveal } from "@/app/_components/reveal-hooks";
+import { RegisterNowBtn } from "@/app/_components/register-now-btn";
 
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -33,9 +34,7 @@ export function FAQ() {
               <p className="text-[0.82rem] text-bmu-muted mb-3 leading-relaxed">
                 Our team is available to answer any queries about the project.
               </p>
-              <a href="#application" className="btn-apply block text-center">
-                Register Now
-              </a>
+              <RegisterNowBtn />
             </div>
           </Reveal>
 

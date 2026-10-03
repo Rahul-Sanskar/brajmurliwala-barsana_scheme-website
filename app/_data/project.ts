@@ -96,7 +96,7 @@ export const CONFIG = {
    * ✅ SET TO true  → Registration open, payment enabled
    * ❌ SET TO false → Registration closed, all buttons disabled
    */
-  REGISTRATION_OPEN: true,
+  REGISTRATION_OPEN: false,
 
   /** Application / booking amount in INR */
   APPLICATION_AMOUNT: 21000,

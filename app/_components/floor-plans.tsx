@@ -6,6 +6,7 @@ import { Maximize2, X } from "lucide-react";
 import { PROJECT, formatSqftRange } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
 import { Reveal } from "@/app/_components/reveal-hooks";
+import { RegisterNowBtn } from "@/app/_components/register-now-btn";
 
 type Plan = { src: string; alt: string; type: string };
 type Tab  = { id: string; label: string; plans: Plan[]; config: typeof PROJECT.unitConfigs[0] };
@@ -143,9 +144,7 @@ export function FloorPlans() {
                 >
                   <Maximize2 size={14} aria-hidden="true" /> View Full Plan
                 </button>
-                <a href="#application" className="btn-apply block text-center">
-                  Register Now
-                </a>
+                <RegisterNowBtn />
               </div>
             </div>
           </div>

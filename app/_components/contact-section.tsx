@@ -1,6 +1,7 @@
 import { MapPin } from "lucide-react";
 import { PROJECT } from "@/app/_data/project";
 import { Reveal } from "@/app/_components/reveal-hooks";
+import { RegisterNowBtn } from "@/app/_components/register-now-btn";
 
 export function ContactSection() {
   const { contact } = PROJECT;
@@ -37,9 +38,7 @@ export function ContactSection() {
               </div>
             </div>
 
-            <a href="#application" className="btn-apply block text-center">
-              Register Now
-            </a>
+            <RegisterNowBtn />
           </Reveal>
 
           {/* Map */}

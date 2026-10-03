@@ -16,7 +16,7 @@ import { Send, CheckCircle, AlertTriangle, X } from "lucide-react";
 import { PROJECT, CONFIG } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
 import { Reveal } from "@/app/_components/reveal-hooks";
-import { RegDates } from "@/app/_components/reg-dates";
+import { RegisterNowBtn } from "@/app/_components/register-now-btn";
 
 /* ── Validation schema ─────────────────────────────────────────── */
 const schema = z.object({
@@ -242,7 +242,6 @@ function EnquiryForm({
 
 /* ── Homepage enquiry section ──────────────────────────────────── */
 export function EnquirySection() {
-  const isOpen = CONFIG.APPLICATION_STATUS === "OPEN";
 
   return (
     <section id="enquiry" aria-labelledby="enquiry-heading" className="section-wrapper-red">
@@ -290,14 +289,7 @@ export function EnquirySection() {
                 Just ₹{CONFIG.APPLICATION_AMOUNT.toLocaleString("en-IN")} via secure Razorpay
                 blocks your unit at the pre-launch price. Only 50 homes available — don&apos;t wait.
               </p>
-              <a
-                href="#application"
-                className={cn("btn-apply block text-center", !isOpen && "opacity-50 pointer-events-none")}
-                aria-disabled={!isOpen}
-              >
-                {isOpen ? "Register Now" : "Registrations Closed"}
-              </a>
-              <RegDates variant="dark" />
+              <RegisterNowBtn variant="dark" />
             </div>
           </Reveal>
 

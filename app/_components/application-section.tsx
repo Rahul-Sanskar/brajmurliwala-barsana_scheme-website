@@ -10,7 +10,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FileText, Lock, AlertTriangle, CheckCircle2, ShieldCheck } from "lucide-react";
 import { CONFIG, PROJECT } from "@/app/_data/project";
-import { RegDates } from "@/app/_components/reg-dates";
 
 /* ── Razorpay types ─────────────────────────────────────────────── */
 interface RazorpayOptions {
@@ -189,13 +188,33 @@ export function ApplicationSection() {
               {loading ? (
                 <><span className="app-spinner" aria-hidden="true" /> Processing…</>
               ) : !isOpen ? (
-                <><Lock size={16} aria-hidden="true" /> Registrations Closed</>
+                <><Lock size={16} aria-hidden="true" /> Registration Closed</>
               ) : (
                 <><FileText size={16} aria-hidden="true" /> Register Now</>
               )}
             </button>
 
-            <RegDates variant="light" />
+            {/* Dates strip — shows registration dates when open, allotment date when closed */}
+            {isOpen ? (
+              <div className="border border-bmu-line bg-[#faf8f6] flex flex-col text-[0.7rem]">
+                <div className="flex items-center gap-2 px-3 py-1.5 border-b border-bmu-line">
+                  <span className="text-bmu-orange text-[10px]">📅</span>
+                  <span className="text-bmu-muted">Registration Open</span>
+                  <span className="font-bold text-bmu-ink ml-auto">{CONFIG.REGISTRATION_START} – {CONFIG.REGISTRATION_END}</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5">
+                  <span className="text-bmu-green text-[10px]">✓</span>
+                  <span className="text-bmu-muted">Allotment Date</span>
+                  <span className="font-bold text-bmu-ink ml-auto">{CONFIG.ALLOTMENT_DATE}</span>
+                </div>
+              </div>
+            ) : (
+              <div className="border border-bmu-line bg-[#faf8f6] flex items-center gap-2 px-3 py-2 text-[0.72rem]">
+                <span className="text-bmu-green text-[10px]">✓</span>
+                <span className="text-bmu-muted">Allotment Date</span>
+                <span className="font-bold text-bmu-ink ml-auto">{CONFIG.ALLOTMENT_DATE}</span>
+              </div>
+            )}
 
             {error && (
               <div className="flex items-start gap-2 text-[0.78rem] text-red-700 bg-red-50 border border-red-200 px-3 py-2 mt-1" role="alert">

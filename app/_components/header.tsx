@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, X, FileText } from "lucide-react";
-import { NAV_ANCHORS, PROJECT } from "@/app/_data/project";
+import { Menu, X, FileText, Lock } from "lucide-react";
+import { NAV_ANCHORS, PROJECT, CONFIG } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
-import { RegDates } from "@/app/_components/reg-dates";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -75,19 +74,36 @@ export function Header() {
 
             {/* Right CTAs */}
             <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
-              {/* Register Now — with date tooltip */}
-              <div className="flex flex-col items-end gap-0.5">
-                <a
-                  href="#application"
-                  className="btn-apply"
-                  style={{ padding: "0.5rem 1rem", fontSize: "0.7rem", width: "auto" }}
-                >
-                  <FileText size={13} aria-hidden="true" />
-                  Register Now
-                </a>
-                <span className="text-[0.6rem] text-white/50 whitespace-nowrap">
-                  5–22 Oct · Allotment 25 Oct
-                </span>
+              <div className="flex flex-col items-end gap-0">
+                {CONFIG.REGISTRATION_OPEN ? (
+                  <>
+                    <a
+                      href="#application"
+                      className="btn-apply"
+                      style={{ padding: "0.5rem 1rem", fontSize: "0.7rem", width: "auto" }}
+                    >
+                      <FileText size={13} aria-hidden="true" />
+                      Register Now
+                    </a>
+                    <span className="text-[0.6rem] text-white/50 whitespace-nowrap mt-0.5">
+                      5–22 Oct · Allotment 25 Oct
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button" disabled aria-disabled="true"
+                      className="btn-apply opacity-60 cursor-not-allowed pointer-events-none"
+                      style={{ padding: "0.5rem 1rem", fontSize: "0.7rem", width: "auto" }}
+                    >
+                      <Lock size={13} aria-hidden="true" />
+                      Registration Closed
+                    </button>
+                    <span className="text-[0.6rem] text-white/50 whitespace-nowrap mt-0.5">
+                      Allotment {CONFIG.ALLOTMENT_DATE}
+                    </span>
+                  </>
+                )}
               </div>
             </div>
 
@@ -159,15 +175,33 @@ export function Header() {
 
           {/* Mobile CTAs */}
           <div className="px-4 pt-4 pb-5 flex flex-col gap-2.5 border-t border-white/15">
-            <a
-              href="#application"
-              className="btn-apply"
-              onClick={() => setOpen(false)}
-            >
-              <FileText size={14} aria-hidden="true" />
-              Register Now
-            </a>
-            <RegDates variant="dark" />
+            {CONFIG.REGISTRATION_OPEN ? (
+              <>
+                <a
+                  href="#application"
+                  className="btn-apply"
+                  onClick={() => setOpen(false)}
+                >
+                  <FileText size={14} aria-hidden="true" />
+                  Register Now
+                </a>
+                <span className="text-[0.65rem] text-white/45 text-center">
+                  5–22 Oct · Allotment {CONFIG.ALLOTMENT_DATE}
+                </span>
+              </>
+            ) : (
+              <>
+                <button type="button" disabled aria-disabled="true"
+                  className="btn-apply opacity-60 cursor-not-allowed pointer-events-none"
+                >
+                  <Lock size={14} aria-hidden="true" />
+                  Registration Closed
+                </button>
+                <span className="text-[0.65rem] text-white/45 text-center">
+                  Allotment Date: {CONFIG.ALLOTMENT_DATE}
+                </span>
+              </>
+            )}
           </div>
         </aside>
       </div>

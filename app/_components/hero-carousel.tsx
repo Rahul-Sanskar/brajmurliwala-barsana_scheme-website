@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PROJECT } from "@/app/_data/project";
+import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
+import { PROJECT, CONFIG } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
 
 /* ── Highlight phrases ─────────────────────────────────────────── */
@@ -118,8 +118,15 @@ export function HeroCarousel() {
 
           {/* CTAs */}
           <div className="hero-ctas">
-            <a href="#overview"    className="hero-btn-outline">{ctaSecondary}</a>
-            <a href="#application" className="hero-btn-primary">{ctaPrimary}</a>
+            <a href="#overview" className="hero-btn-outline">{ctaSecondary}</a>
+            {CONFIG.REGISTRATION_OPEN ? (
+              <a href="#application" className="hero-btn-primary">{ctaPrimary}</a>
+            ) : (
+              <span className="hero-btn-primary" style={{ opacity: 0.6, cursor: "not-allowed", pointerEvents: "none" }}>
+                <Lock size={14} aria-hidden="true" className="inline mr-1" />
+                Registration Closed
+              </span>
+            )}
           </div>
         </div>
 

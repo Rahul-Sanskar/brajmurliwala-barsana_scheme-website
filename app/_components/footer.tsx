@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, FileText, ExternalLink } from "lucide-react";
-import { NAV_ANCHORS, PROJECT, SITE_LINKS } from "@/app/_data/project";
+import { MapPin, FileText, Lock, ExternalLink } from "lucide-react";
+import { NAV_ANCHORS, PROJECT, SITE_LINKS, CONFIG } from "@/app/_data/project";
 
 export function Footer() {
   const sitemapLinks = NAV_ANCHORS.filter((a) => a.id !== "home" && !a.primary);
@@ -66,10 +66,17 @@ export function Footer() {
               </li>
             ))}
             <li>
-              <a href="#application" className="footer-muted hover:text-bmu-orange flex items-center gap-2 transition-colors font-semibold">
-                <FileText size={13} className="text-bmu-orange" aria-hidden="true" />
-                Register Now
-              </a>
+              {CONFIG.REGISTRATION_OPEN ? (
+                <a href="#application" className="footer-muted hover:text-bmu-orange flex items-center gap-2 transition-colors font-semibold">
+                  <FileText size={13} className="text-bmu-orange" aria-hidden="true" />
+                  Register Now
+                </a>
+              ) : (
+                <span className="footer-muted flex items-center gap-2 opacity-55 font-semibold">
+                  <Lock size={13} className="text-bmu-orange/50" aria-hidden="true" />
+                  Registration Closed
+                </span>
+              )}
             </li>
           </ul>
         </div>

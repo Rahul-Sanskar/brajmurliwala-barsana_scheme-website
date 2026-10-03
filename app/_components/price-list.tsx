@@ -1,6 +1,7 @@
 "use client";
 
 import { PROJECT, formatSqftRange, formatLakhs } from "@/app/_data/project";
+import { RegisterNowBtn } from "@/app/_components/register-now-btn";
 
 export function PriceList() {
   return (
@@ -58,9 +59,7 @@ export function PriceList() {
                   <td>{u.furnishedAvailable ? "✓ Available" : "—"}</td>
                   <td><span className={u.status === "Available" ? "avail-badge-available" : "avail-badge-enquire"}>{u.status}</span></td>
                   <td>
-                    <a href="#application" className="btn-apply px-3 py-1.5 text-[0.72rem] inline-flex items-center gap-1">
-                      Register Now
-                    </a>
+                    <RegisterNowBtn variant="small" />
                   </td>
                 </tr>
               ))}
@@ -90,9 +89,7 @@ export function PriceList() {
                 ))}
               </div>
               <div className="px-4 py-3">
-                <a href="#application" className="btn-apply block text-center">
-                  Register Now
-                </a>
+                <RegisterNowBtn />
               </div>
             </div>
           ))}
