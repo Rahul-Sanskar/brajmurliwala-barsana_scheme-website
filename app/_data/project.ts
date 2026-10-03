@@ -190,7 +190,7 @@ export const PROJECT = {
   heroSlides: [
     {
       /* ── SLIDE 0 — Advertisement image ── */
-      src: "/braj/hero/बारसाना हाउसिंग स्कीम विज्ञापन.png",
+      src: "/braj/hero/0-barsana-ad.png",
       alt: "बारसाना हाउसिंग स्कीम विज्ञापन — Braj Murliwala Residency",
       kicker: "बरसाना अर्बन हाउसिंग स्कीम",
       title: "ब्रज मुरलीवाला रेजीडेंसी",
