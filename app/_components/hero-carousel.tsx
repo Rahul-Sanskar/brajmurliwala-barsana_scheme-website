@@ -147,7 +147,7 @@ export function HeroCarousel() {
               alt={s.alt}
               fill
               sizes="(min-width: 1024px) 55vw, 100vw"
-              className="object-cover object-center"
+              className={s.objectFit === "contain" ? "object-contain object-center bg-white" : "object-cover object-center"}
               priority={i === 0}
               loading={i === 0 ? "eager" : "lazy"}
               draggable={false}

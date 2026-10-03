@@ -64,6 +64,8 @@ export type HeroSlide = {
   src: string;
   alt: string;
   message: string;
+  /** "cover" (default) crops to fill; "contain" shows the full image */
+  objectFit?: "cover" | "contain";
   /** Optional per-slide overrides — if omitted, global PROJECT values are used */
   kicker?: string;
   title?: string;
@@ -192,6 +194,7 @@ export const PROJECT = {
       /* ── SLIDE 0 — Advertisement image ── */
       src: "/braj/hero/0-barsana-ad.png",
       alt: "बारसाना हाउसिंग स्कीम विज्ञापन — Braj Murliwala Residency",
+      objectFit: "contain",
       kicker: "बरसाना अर्बन हाउसिंग स्कीम",
       title: "ब्रज मुरलीवाला रेजीडेंसी",
       location: "गोवर्धन रोड, बरसाना",
