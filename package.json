@@ -8,6 +8,12 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "overrides": {
+    "postcss": "^8.5.23",
+    "sharp": "^0.35.4",
+    "braces": "^3.0.3",
+    "micromatch": "^4.0.8"
+  },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
     "class-variance-authority": "^0.7.1",
@@ -16,11 +22,13 @@
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.49.0",
-    "next": "^15.5.24",
+    "next": "^15.5.27",
+    "postcss": "^8.5.23",
     "razorpay": "2.9.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.89.0",
+    "sharp": "^0.35.4",
     "tailwind-merge": "^3.7.0",
     "zod": "^4.6.5"
   },
@@ -30,7 +38,7 @@
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
     "eslint": "^9",
-    "eslint-config-next": "^15.3.6",
+    "eslint-config-next": "^15.5.27",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
