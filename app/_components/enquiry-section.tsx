@@ -368,7 +368,7 @@ export function EnquirySection() {
           <Reveal delay={120}>
             <div className="bg-white p-6">
               <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-bmu-red mb-1">
-                🔥 Units selling fast — enquire immediately
+                🔥 Units going fast — register now to secure yours
               </p>
               <p className="text-[0.72rem] text-bmu-muted mb-5">
                 Free enquiry · No payment required · Team responds within the hour

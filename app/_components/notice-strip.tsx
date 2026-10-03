@@ -6,7 +6,7 @@ export function NoticeStrip() {
   type NoticeItem = { text: string; highlight?: "scheme" | "divine" };
 
   const items: NoticeItem[] = [
-    { text: "⚠️ ONLY 50 UNITS LEFT — Selling fast, don't wait!",  highlight: "scheme" },
+    { text: "⚠️ ONLY 50 UNITS LEFT — Book your slot before it's gone!",  highlight: "scheme" },
     { text: PROJECT.portal.name,                                    highlight: "scheme" },
     { text: "🔥 Pre-launch ₹7,999/sq.ft. → ₹8,499 after launch — every day costs more!" },
     { text: PROJECT.name },

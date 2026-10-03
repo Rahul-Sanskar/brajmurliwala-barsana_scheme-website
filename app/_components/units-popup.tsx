@@ -96,7 +96,7 @@ export function UnitsPopup() {
             "Steps from Shree Radha Rani Mandir & Kirti Mandir",
             "1, 2 & 3 BHK — starting ₹74 Lakh",
             "Bank loan up to 90% available",
-            "Selling fast — first come, first served",
+            "Secure your slot now — first come, first served",
           ].map((b) => (
             <li key={b}>
               <span className="units-popup-bullet-dot" aria-hidden="true" />

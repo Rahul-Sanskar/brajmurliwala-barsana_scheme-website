@@ -40,7 +40,7 @@ export function UrgencyBanner() {
             <AlertTriangle size={15} className="flex-shrink-0" aria-hidden="true" />
             <span>
               <strong>Only 50 Units Left</strong>
-              <span className="urgency-sub"> — selling fast</span>
+              <span className="urgency-sub"> — register now to secure yours</span>
             </span>
           </div>
 

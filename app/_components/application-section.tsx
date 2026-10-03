@@ -129,7 +129,7 @@ export function ApplicationSection() {
               <div className="flex items-center gap-2 bg-red-50 border border-red-200 px-3 py-2">
                 <AlertTriangle size={14} className="text-bmu-red flex-shrink-0" aria-hidden="true" />
                 <span className="text-[0.75rem] font-bold text-bmu-red">
-                  Only 50 units remaining — selling fast!
+                  Only 50 units remaining — secure your slot now!
                 </span>
               </div>
             )}
