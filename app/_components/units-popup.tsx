@@ -107,7 +107,7 @@ export function UnitsPopup() {
 
         {/* CTAs */}
         <button type="button" className="units-popup-cta-primary" onClick={handleEnquire}>
-          Enquire Now — It&apos;s Free
+          Register Now — It&apos;s Free
         </button>
         <button type="button" className="units-popup-cta-secondary" onClick={dismiss}>
           Remind me later

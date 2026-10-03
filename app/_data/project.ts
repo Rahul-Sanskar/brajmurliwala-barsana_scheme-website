@@ -189,6 +189,17 @@ export const PROJECT = {
 
   heroSlides: [
     {
+      /* ── SLIDE 0 — Advertisement image ── */
+      src: "/braj/hero/बारसाना हाउसिंग स्कीम विज्ञापन.png",
+      alt: "बारसाना हाउसिंग स्कीम विज्ञापन — Braj Murliwala Residency",
+      kicker: "बरसाना अर्बन हाउसिंग स्कीम",
+      title: "ब्रज मुरलीवाला रेजीडेंसी",
+      location: "गोवर्धन रोड, बरसाना",
+      message: "⚠️ केवल 50 यूनिट बचे हैं — जल्दी करें!\nश्री राधा रानी की नगरी में अपना घर पाएं।\nरजिस्ट्रेशन: 5 अक्टूबर से 22 अक्टूबर 2026।",
+      ctaPrimary: "अभी रजिस्टर करें",
+      ctaSecondary: "प्रोजेक्ट देखें",
+    },
+    {
       /* ── SLIDE 1 — Hindi ── */
       src: "/braj/hero/1-elevation-day.png",
       alt: "Braj Murliwala Residency elevation on Goverdhan Road, Barsana — daytime view",
