@@ -22,7 +22,6 @@ import { FloorPlans }           from "./_components/floor-plans";
 import { Documents }            from "./_components/documents";
 import { Gallery }              from "./_components/gallery";
 import { Amenities }            from "./_components/amenities";
-import { WhyBarsana }           from "./_components/why-barsana";
 import { LocationConnectivity } from "./_components/location-connectivity";
 import { FAQ }                  from "./_components/faq";
 import { EnquirySection }       from "./_components/enquiry-section";
@@ -90,9 +89,6 @@ export default function HomePage() {
 
       {/* Amenities: static */}
       <Amenities />
-
-      {/* Why Barsana: static */}
-      <WhyBarsana />
 
       {/* Location: embeds map iframe */}
       <LocationConnectivity />
