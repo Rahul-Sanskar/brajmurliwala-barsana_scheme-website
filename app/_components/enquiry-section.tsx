@@ -84,14 +84,7 @@ function EnquiryForm({
         <CheckCircle size={44} className="text-bmu-green" aria-hidden="true" />
         <p className="font-bold text-bmu-ink text-[1.15rem]">Enquiry Submitted!</p>
         <p className="text-bmu-muted text-[0.88rem] leading-relaxed max-w-xs">
-          Thank you{" "}— our team will call you back within the hour.
-          For faster response call{" "}
-          <a
-            href={`tel:${PROJECT.contact.phonePrimary.replace(/\s/g, "")}`}
-            className="font-bold text-bmu-red hover:underline"
-          >
-            {PROJECT.contact.phonePrimary}
-          </a>.
+          Thank you — our team will reach out within the hour.
         </p>
         <button className="btn-outline mt-1 text-[0.82rem]" onClick={() => setSubmitted(false)}>
           Submit Another Enquiry
@@ -281,31 +274,9 @@ export function EnquirySection() {
             </div>
 
             <p className="text-white/70 text-[0.9rem] leading-relaxed mb-6">
-              Fill the form — our team calls back within the hour to discuss your unit,
+              Fill the form — our team will reach out within the hour to discuss your unit,
               floor plan and site visit. Free, no obligation.
             </p>
-
-            {/* Contact details */}
-            <div className="space-y-2.5 mb-7">
-              {[
-                { label: "Phone",   value: PROJECT.contact.phonePrimary,   href: `tel:${PROJECT.contact.phonePrimary.replace(/\s/g, "")}` },
-                { label: "Email",   value: PROJECT.contact.email,           href: `mailto:${PROJECT.contact.email}` },
-                { label: "Address", value: `${PROJECT.location.address}, ${PROJECT.location.city}`, href: undefined },
-              ].map((r) => (
-                <div key={r.label} className="text-[0.87rem] text-white/75">
-                  <span className="font-bold text-white/40 uppercase tracking-[0.1em] text-[0.65rem] mr-2">
-                    {r.label}
-                  </span>
-                  {r.href ? (
-                    <a href={r.href} className="font-semibold text-white hover:text-bmu-orange-100 transition-colors">
-                      {r.value}
-                    </a>
-                  ) : (
-                    <span className="font-semibold text-white">{r.value}</span>
-                  )}
-                </div>
-              ))}
-            </div>
 
             {/* Register Now block */}
             <div className="bg-black/20 border border-white/15 p-5">

@@ -18,7 +18,7 @@ export function NoticeStrip() {
     { text: `Bank Loan up to ${PROJECT.pricing.bankLoanUptoPercent}% — Apply NOW!` },
     { text: `Application Amount: ₹${CONFIG.APPLICATION_AMOUNT.toLocaleString("en-IN")} — Block your unit today` },
     { text: "🙏 Shree Radha Rani ke aashirwad mein apna ghar paayein",  highlight: "divine" },
-    { text: `Site visits daily — call ${PROJECT.contact.phonePrimary} NOW` },
+    { text: `Site visits available daily — Register Now to secure your slot` },
     { text: "50 units only — first come, first served. Don't let someone else take yours." },
   ];
 

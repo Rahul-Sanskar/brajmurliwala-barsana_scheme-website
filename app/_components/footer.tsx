@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, FileText, ExternalLink } from "lucide-react";
+import { MapPin, FileText, ExternalLink } from "lucide-react";
 import { NAV_ANCHORS, PROJECT, SITE_LINKS } from "@/app/_data/project";
-import { formatPhoneHref } from "@/app/_lib/utils";
 
 export function Footer() {
   const sitemapLinks = NAV_ANCHORS.filter((a) => a.id !== "home" && !a.primary);
@@ -86,20 +85,6 @@ export function Footer() {
                   <span key={i}>{l}{i < PROJECT.contact.addressLines.length - 1 ? <br /> : null}</span>
                 ))}
               </span>
-            </li>
-            <li>
-              <a href={formatPhoneHref(PROJECT.contact.phonePrimary)}
-                className="flex items-center gap-2.5 footer-muted hover:text-bmu-orange transition-colors text-[0.83rem]">
-                <Phone size={14} className="flex-shrink-0 text-bmu-orange/70" aria-hidden="true" />
-                {PROJECT.contact.phonePrimary}
-              </a>
-            </li>
-            <li>
-              <a href={`mailto:${PROJECT.contact.email}`}
-                className="flex items-center gap-2.5 footer-muted hover:text-bmu-orange transition-colors text-[0.83rem] break-all">
-                <Mail size={14} className="flex-shrink-0 text-bmu-orange/70" aria-hidden="true" />
-                {PROJECT.contact.email}
-              </a>
             </li>
             <li>
               <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(PROJECT.contact.mapQuery)}`}

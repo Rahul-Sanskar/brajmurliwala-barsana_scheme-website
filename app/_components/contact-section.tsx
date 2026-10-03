@@ -1,6 +1,4 @@
-"use client";
-
-import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { PROJECT } from "@/app/_data/project";
 import { Reveal } from "@/app/_components/reveal-hooks";
 
@@ -27,30 +25,15 @@ export function ContactSection() {
             <div className="border border-bmu-line bg-white overflow-hidden mb-4">
               <div className="card-header-bar bg-bmu-red-800">{PROJECT.name}</div>
               <div className="divide-y divide-bmu-line">
-                {[
-                  { Icon: MapPin, label: "Address", content: (
+                <div className="contact-info-row px-4">
+                  <div className="contact-info-icon"><MapPin size={15} aria-hidden="true" /></div>
+                  <div>
+                    <div className="text-[0.68rem] font-bold uppercase tracking-[0.1em] text-bmu-muted mb-0.5">Address</div>
                     <div>{contact.addressLines.map((l, i) => (
                       <div key={i} className="text-[0.9rem] text-bmu-ink leading-snug">{l}</div>
                     ))}</div>
-                  )},
-                  { Icon: Phone, label: "Phone", content: (
-                    <span className="text-[0.9rem] font-semibold text-bmu-ink">{contact.phonePrimary}</span>
-                  )},
-                  { Icon: Mail, label: "Email", content: (
-                    <span className="text-[0.9rem] font-semibold text-bmu-ink break-all">{contact.email}</span>
-                  )},
-                  { Icon: MessageCircle, label: "WhatsApp", content: (
-                    <span className="text-[0.9rem] font-semibold text-bmu-ink">{contact.whatsapp}</span>
-                  )},
-                ].map(({ Icon, label, content }) => (
-                  <div key={label} className="contact-info-row px-4">
-                    <div className="contact-info-icon"><Icon size={15} aria-hidden="true" /></div>
-                    <div>
-                      <div className="text-[0.68rem] font-bold uppercase tracking-[0.1em] text-bmu-muted mb-0.5">{label}</div>
-                      {content}
-                    </div>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
 
