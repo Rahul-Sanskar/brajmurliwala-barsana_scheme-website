@@ -75,32 +75,52 @@ export type HeroSlide = {
 };
 
 /**
- * APPLICATION CONFIGURATION — single source of truth.
- * Change APPLICATION_AMOUNT and APPLICATION_STATUS here only.
- * Never hard-code these values in components.
+ * ════════════════════════════════════════════════════════════════
+ *  REGISTRATION CONTROL — change only these values
+ * ════════════════════════════════════════════════════════════════
+ *
+ *  REGISTRATION_OPEN: true
+ *    → "Register Now" button is active, Razorpay payment works,
+ *      user is redirected to payment gateway and returns to /results.
+ *
+ *  REGISTRATION_OPEN: false
+ *    → Every "Register Now" button changes to "Registration Closed"
+ *      and becomes unclickable (disabled + pointer-events: none).
+ *      No payment can be initiated from the website.
+ *
+ *  Never hard-code these values anywhere else — edit only here.
+ * ════════════════════════════════════════════════════════════════
  */
 export const CONFIG = {
-  /** Application / booking amount in INR (paise = × 100 when sent to Razorpay) */
+  /**
+   * ✅ SET TO true  → Registration open, payment enabled
+   * ❌ SET TO false → Registration closed, all buttons disabled
+   */
+  REGISTRATION_OPEN: true,
+
+  /** Application / booking amount in INR */
   APPLICATION_AMOUNT: 21000,
 
   /**
-   * "OPEN"   — registrations are being accepted; REGISTER NOW button is enabled.
-   * "CLOSED" — registrations are paused; button is visually disabled.
+   * Derived from REGISTRATION_OPEN — do not change this line.
+   * Components read APPLICATION_STATUS so no component changes needed.
    */
-  APPLICATION_STATUS: "OPEN" as "OPEN" | "CLOSED",
+  get APPLICATION_STATUS(): "OPEN" | "CLOSED" {
+    return this.REGISTRATION_OPEN ? "OPEN" : "CLOSED";
+  },
 
   /**
    * Set to true when Razorpay credentials are configured in .env.local.
-   * When false the REGISTER NOW button shows a "Payment not configured" notice
-   * instead of initiating a checkout — prevents accidental live charges.
+   * When false the button shows "Payment not configured" instead of
+   * initiating checkout — prevents accidental live charges during setup.
    */
   RAZORPAY_ENABLED: true,
 
-  /** Registration window & allotment — displayed beneath every Register Now button */
+  /** Registration window & allotment — shown beneath every Register Now button */
   REGISTRATION_START: "5 Oct 2026",
   REGISTRATION_END:   "22 Oct 2026",
   ALLOTMENT_DATE:     "25 Oct 2026",
-} as const;
+};
 
 export const PROJECT = {
   portal: {
