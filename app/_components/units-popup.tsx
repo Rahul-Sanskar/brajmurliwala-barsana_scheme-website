@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { X, AlertTriangle, Flame } from "lucide-react";
-import { useEnquiry } from "@/app/_components/enquiry-trigger";
 import { CONFIG } from "@/app/_data/project";
 
 const STORAGE_KEY = "bmu_popup_seen";
@@ -15,7 +14,6 @@ const SNOOZE_H    = 6;      // don't re-show for 6 hours
  */
 export function UnitsPopup() {
   const [visible, setVisible] = useState(false);
-  const { open: openEnquiry } = useEnquiry();
 
   useEffect(() => {
     // Check snooze
@@ -36,9 +34,11 @@ export function UnitsPopup() {
     try { sessionStorage.setItem(STORAGE_KEY, String(Date.now())); } catch { /* */ }
   };
 
-  const handleEnquire = () => {
+  const handleRegister = () => {
     dismiss();
-    openEnquiry();
+    // Scroll to the application/registration section
+    const el = document.getElementById("application");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   if (!visible || CONFIG.APPLICATION_STATUS !== "OPEN") return null;
@@ -106,8 +106,8 @@ export function UnitsPopup() {
         </ul>
 
         {/* CTAs */}
-        <button type="button" className="units-popup-cta-primary" onClick={handleEnquire}>
-          Register Now — It&apos;s Free
+        <button type="button" className="units-popup-cta-primary" onClick={handleRegister}>
+          Register Now
         </button>
         <button type="button" className="units-popup-cta-secondary" onClick={dismiss}>
           Remind me later
