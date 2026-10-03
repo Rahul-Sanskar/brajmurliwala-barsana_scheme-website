@@ -32,6 +32,8 @@ export type DocumentItem = {
   sizeKb?: number;
   available: boolean;
   note?: string;
+  /** Public URL of the file (e.g. "/braj/Bmw RERA.pdf") — required when available: true */
+  file?: string;
 };
 
 export type ContactInfo = {
@@ -201,7 +203,7 @@ export const PROJECT = {
       /* ── SLIDE 2 — English ── */
       src: "/braj/hero/2-elevation-night.png",
       alt: "Braj Murliwala Residency illuminated night elevation — Goverdhan Road, Barsana",
-      message: "Only 50 units remaining — selling fast!\nSecure your home in the divine city of Shree Radha Rani.\nPre-launch rate ₹7,999/sq.ft. — rising after launch.",
+      message: "Only 50 units remaining — register now to secure yours!\nSecure your home in the divine city of Shree Radha Rani.\nPre-launch rate ₹7,999/sq.ft. — rising after launch.",
     },
     {
       /* ── SLIDE 3 — Hindi ── */
@@ -278,7 +280,7 @@ export const PROJECT = {
       "Developed by SKG Infratech — the group behind the established Murliwala Hotels and Restaurants in Braj — this is a trusted, RERA-approved project. Bank loan assistance up to 90% is available. Every day without booking is money left on the table. Secure your home today.",
     ],
     points: [
-      "⚠️ Only 50 units available — selling fast",
+      "⚠️ Only 50 units available — book your slot now",
       "Pre-launch ₹7,999/sq.ft. — rising to ₹8,499 after launch",
       "Bank loan up to 90% — apply now",
       "Steps from Shree Radha Rani Mandir, Kirti Mandir & Bus Stand",
@@ -371,12 +373,43 @@ export const PROJECT = {
 
   documents: [
     {
+      id: "rera",
+      title: "RERA Certificate",
+      description: "UP-RERA registration certificate for Braj Murliwala Residency.",
+      type: "PDF",
+      available: true,
+      file: "/braj/Bmw RERA.pdf",
+    },
+    {
+      id: "layout",
+      title: "Project Layout Plan",
+      description: "Approved layout plan of Braj Murliwala Residency — plot boundaries and block positions.",
+      type: "PDF",
+      available: true,
+      file: "/braj/bmw layout.pdf",
+    },
+    {
+      id: "nagar-nigam",
+      title: "Nagar Nigam Approval",
+      description: "Nagar Nigam (Municipal Corporation) approval document for the project.",
+      type: "PDF",
+      available: true,
+      file: "/braj/bmw nagar nigam.pdf",
+    },
+    {
+      id: "khasra",
+      title: "Khasra Map",
+      description: "Official khasra (land parcel) map for the project site on Goverdhan Road, Barsana.",
+      type: "PDF",
+      available: true,
+      file: "/braj/bmw khasra map.pdf",
+    },
+    {
       id: "brochure",
       title: "Project Brochure",
       description: "Complete project overview including elevations, floor plans, amenities and pricing.",
       type: "Brochure",
       available: false,
-      note: "[TO BE PROVIDED]",
     },
     {
       id: "floor-plan",
@@ -384,7 +417,6 @@ export const PROJECT = {
       description: "Detailed floor plans for all configurations — 1 BHK, 2 BHK, and 3 BHK.",
       type: "PDF",
       available: false,
-      note: "[TO BE PROVIDED]",
     },
     {
       id: "payment-plan",
@@ -392,15 +424,6 @@ export const PROJECT = {
       description: "Construction-linked and down-payment schedule with financing options.",
       type: "PDF",
       available: false,
-      note: "[TO BE PROVIDED]",
-    },
-    {
-      id: "rera",
-      title: "RERA Certificate",
-      description: "UP-RERA registration certificate for this project.",
-      type: "PDF",
-      available: false,
-      note: "[TO BE PROVIDED]",
     },
     {
       id: "spec-sheet",
@@ -408,7 +431,6 @@ export const PROJECT = {
       description: "Detailed specifications for structure, finishes, fittings and amenities.",
       type: "PDF",
       available: false,
-      note: "[TO BE PROVIDED]",
     },
   ] as DocumentItem[],
 
@@ -476,7 +498,7 @@ export const PROJECT = {
   ] as FaqItem[],
 
   notices: [
-    "⚠️ ONLY 50 UNITS REMAINING — Selling fast, act now before they're gone!",
+    "⚠️ ONLY 50 UNITS REMAINING — Register now, secure your slot before it's gone!",
     "Pre-Launch price ₹7,999/sq.ft. — price RISES to ₹8,499 after launch. Lock in now!",
     "🔥 Pre-launch offer closes soon — every day of delay costs you ₹500/sq.ft. more.",
     "Bank loan up to 90% available — apply today, move in to the city of Shree Radha Rani.",
@@ -487,7 +509,7 @@ export const PROJECT = {
   ],
 
   snapshot: [
-    { label: "Units Remaining", value: "Only 50 Left", sub: "Selling fast — act now!", icon: "AlertTriangle" },
+    { label: "Units Remaining", value: "Only 50 Left", sub: "Register now — secure your slot", icon: "AlertTriangle" },
     { label: "Location",        value: "Goverdhan Road", sub: "Barsana — City of Shree Radha Rani", icon: "MapPin" },
     { label: "Pre-Launch Price", value: "₹74 Lakh+", sub: "₹7,999/sq.ft. — rising soon", icon: "Banknote" },
     { label: "Project",         value: "Braj Murliwala Residency", sub: "Barsana Housing Scheme", icon: "Building2" },

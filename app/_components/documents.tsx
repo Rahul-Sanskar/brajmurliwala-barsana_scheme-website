@@ -1,14 +1,103 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { FileText, Download, Eye, Clock, ChevronDown, ChevronUp } from "lucide-react";
-import { PROJECT } from "@/app/_data/project";
+import {
+  FileText, Download, Eye, Clock,
+  ChevronDown, ChevronUp, X, ExternalLink,
+} from "lucide-react";
+import { PROJECT, type DocumentItem } from "@/app/_data/project";
 import { Reveal } from "@/app/_components/reveal-hooks";
 
-/**
- * Specifications panel — rendered inline inside the Documents section.
- * Opens/closes when the user clicks the "View Specifications" button.
- */
+/* ─────────────────────────────────────────────────────────────────
+   PDF Viewer Modal
+   Opens the PDF in an <iframe> with a toolbar: download + open-in-tab
+   ───────────────────────────────────────────────────────────────── */
+function PdfModal({
+  doc,
+  onClose,
+}: {
+  doc: DocumentItem;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className="pdf-modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pdf-modal-title"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div className="pdf-modal">
+        {/* Header bar */}
+        <div className="pdf-modal-header">
+          <div className="flex items-center gap-2 min-w-0">
+            <FileText size={16} className="text-bmu-orange flex-shrink-0" aria-hidden="true" />
+            <span id="pdf-modal-title" className="font-bold text-white text-[0.95rem] truncate">
+              {doc.title}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Download */}
+            <a
+              href={doc.file}
+              download
+              className="pdf-modal-btn"
+              aria-label={`Download ${doc.title}`}
+            >
+              <Download size={14} aria-hidden="true" />
+              <span className="hidden sm:inline">Download</span>
+            </a>
+            {/* Open in new tab */}
+            <a
+              href={doc.file}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pdf-modal-btn"
+              aria-label={`Open ${doc.title} in new tab`}
+            >
+              <ExternalLink size={14} aria-hidden="true" />
+              <span className="hidden sm:inline">Open Tab</span>
+            </a>
+            {/* Close */}
+            <button
+              type="button"
+              onClick={onClose}
+              className="pdf-modal-close"
+              aria-label="Close preview"
+            >
+              <X size={16} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        {/* PDF iframe */}
+        <div className="pdf-modal-body">
+          <iframe
+            src={`${doc.file}#toolbar=1&view=FitH`}
+            title={doc.title}
+            className="pdf-iframe"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Footer note */}
+        <div className="pdf-modal-footer">
+          <span>
+            If the document doesn&apos;t load,{" "}
+            <a href={doc.file} download className="underline text-bmu-orange hover:text-bmu-orange-100">
+              download it directly
+            </a>.
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Specifications panel (unchanged)
+   ───────────────────────────────────────────────────────────────── */
 function SpecificationsPanel() {
   return (
     <div className="border border-bmu-line overflow-x-auto mt-1">
@@ -42,10 +131,14 @@ function SpecificationsPanel() {
   );
 }
 
+/* ─────────────────────────────────────────────────────────────────
+   Main Documents section
+   ───────────────────────────────────────────────────────────────── */
 export function Documents() {
   const [specsOpen, setSpecsOpen] = useState(false);
+  const [previewDoc, setPreviewDoc] = useState<DocumentItem | null>(null);
 
-  // Filter out spec-sheet from the docs list — it's embedded below as an interactive panel
+  // Available PDFs + pending ones; spec-sheet handled separately at bottom
   const displayDocs = PROJECT.documents.filter((d) => d.id !== "spec-sheet");
 
   return (
@@ -57,12 +150,12 @@ export function Documents() {
             <h2 id="documents-heading" className="section-title">Documents &amp; Downloads</h2>
             <span className="section-rule" />
             <p className="prose-body mt-1">
-              Official project documents. Additional documents will be published as they are released.
+              Official project documents. Click <strong>Preview</strong> to view any document inline, or download it directly.
             </p>
           </div>
         </div>
 
-        {/* Desktop portal table */}
+        {/* ── Desktop table ──────────────────────────────────── */}
         <Reveal>
           <div className="hidden md:block table-scroll border border-bmu-line">
             <table className="doc-table w-full">
@@ -76,7 +169,6 @@ export function Documents() {
                 </tr>
               </thead>
               <tbody>
-                {/* Regular documents */}
                 {displayDocs.map((doc) => (
                   <tr key={doc.id}>
                     <td>
@@ -101,14 +193,24 @@ export function Documents() {
                         : <span className="avail-badge-enquire text-[0.7rem]">Coming Soon</span>}
                     </td>
                     <td>
-                      {doc.available ? (
+                      {doc.available && doc.file ? (
                         <div className="flex items-center gap-2">
-                          <button className="btn-outline px-2 py-1 text-[0.7rem]" aria-label={`View ${doc.title}`}>
-                            <Eye size={12} aria-hidden="true" /> View
+                          <button
+                            type="button"
+                            className="btn-outline px-2 py-1 text-[0.7rem]"
+                            aria-label={`Preview ${doc.title}`}
+                            onClick={() => setPreviewDoc(doc)}
+                          >
+                            <Eye size={12} aria-hidden="true" /> Preview
                           </button>
-                          <button className="btn-primary px-2 py-1 text-[0.7rem]" aria-label={`Download ${doc.title}`}>
+                          <a
+                            href={doc.file}
+                            download
+                            className="btn-primary px-2 py-1 text-[0.7rem] inline-flex items-center gap-1"
+                            aria-label={`Download ${doc.title}`}
+                          >
                             <Download size={12} aria-hidden="true" /> Download
-                          </button>
+                          </a>
                         </div>
                       ) : (
                         <button disabled className="inline-flex items-center gap-1 text-[0.7rem] text-bmu-muted border border-bmu-line px-2 py-1 opacity-55 cursor-not-allowed">
@@ -119,7 +221,7 @@ export function Documents() {
                   </tr>
                 ))}
 
-                {/* Specifications — expandable row */}
+                {/* Specifications row */}
                 <tr>
                   <td>
                     <div className="flex items-center gap-2">
@@ -132,12 +234,8 @@ export function Documents() {
                   <td className="text-[0.83rem] text-bmu-muted">
                     Detailed construction specifications — structure, flooring, fittings, doors, windows and infrastructure.
                   </td>
-                  <td>
-                    <span className="doc-badge doc-badge-tbd">Inline</span>
-                  </td>
-                  <td>
-                    <span className="avail-badge-available text-[0.7rem]">Available</span>
-                  </td>
+                  <td><span className="doc-badge doc-badge-tbd">Inline</span></td>
+                  <td><span className="avail-badge-available text-[0.7rem]">Available</span></td>
                   <td>
                     <button
                       onClick={() => setSpecsOpen(!specsOpen)}
@@ -156,14 +254,14 @@ export function Documents() {
           </div>
         </Reveal>
 
-        {/* Expandable specifications panel — desktop */}
+        {/* Expandable spec panel — desktop */}
         {specsOpen && (
           <div id="spec-panel" className="hidden md:block mt-0">
             <SpecificationsPanel />
           </div>
         )}
 
-        {/* Mobile cards */}
+        {/* ── Mobile cards ───────────────────────────────────── */}
         <div className="md:hidden space-y-3">
           {displayDocs.map((doc) => (
             <div key={doc.id} className="doc-card">
@@ -180,21 +278,33 @@ export function Documents() {
                 </div>
               </div>
               <div className="px-3.5 pb-3.5 flex items-center gap-2">
-                {doc.available ? (
+                {doc.available && doc.file ? (
                   <>
-                    <button className="btn-outline px-3 py-1"><Eye size={12} aria-hidden="true" /> View</button>
-                    <button className="btn-primary px-3 py-1"><Download size={12} aria-hidden="true" /> Download</button>
+                    <button
+                      type="button"
+                      className="btn-outline px-3 py-1"
+                      onClick={() => setPreviewDoc(doc)}
+                    >
+                      <Eye size={12} aria-hidden="true" /> Preview
+                    </button>
+                    <a
+                      href={doc.file}
+                      download
+                      className="btn-primary px-3 py-1 inline-flex items-center gap-1"
+                    >
+                      <Download size={12} aria-hidden="true" /> Download
+                    </a>
                   </>
                 ) : (
                   <button disabled className="inline-flex items-center gap-1.5 text-[0.75rem] text-bmu-muted border border-bmu-line px-3 py-1.5 opacity-55 cursor-not-allowed">
-                    <Clock size={12} aria-hidden="true" /> To Be Provided
+                    <Clock size={12} aria-hidden="true" /> Coming Soon
                   </button>
                 )}
               </div>
             </div>
           ))}
 
-          {/* Specifications mobile card */}
+          {/* Spec sheet mobile */}
           <div className="doc-card">
             <div className="p-3.5 flex items-start gap-3 flex-1">
               <div className="doc-card-icon mt-0.5"><FileText size={16} aria-hidden="true" /></div>
@@ -221,14 +331,12 @@ export function Documents() {
             </div>
           </div>
 
-          {/* Expandable specifications panel — mobile */}
           {specsOpen && (
-            <div id="spec-panel-mobile">
-              <SpecificationsPanel />
-            </div>
+            <div id="spec-panel-mobile"><SpecificationsPanel /></div>
           )}
         </div>
 
+        {/* Contact strip */}
         <div className="mt-5 p-4 bg-bmu-red-50 border border-bmu-red-100">
           <p className="text-[0.85rem] text-bmu-ink">
             For immediate document requests, contact{" "}
@@ -242,6 +350,11 @@ export function Documents() {
           </p>
         </div>
       </div>
+
+      {/* PDF viewer modal */}
+      {previewDoc && (
+        <PdfModal doc={previewDoc} onClose={() => setPreviewDoc(null)} />
+      )}
     </section>
   );
 }
