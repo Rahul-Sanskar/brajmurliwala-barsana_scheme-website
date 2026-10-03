@@ -16,6 +16,7 @@ import { Send, CheckCircle, AlertTriangle, X, FileText, Lock } from "lucide-reac
 import { PROJECT, CONFIG } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
 import { Reveal } from "@/app/_components/reveal-hooks";
+import { RegDates } from "@/app/_components/reg-dates";
 
 /* ── Validation schema ─────────────────────────────────────────── */
 const schema = z.object({
@@ -347,17 +348,18 @@ export function EnquirySection() {
                 {isOpen ? (
                   <>
                     <FileText size={15} aria-hidden="true" className="inline mr-1.5" />
-                    Apply Now — Block for ₹{CONFIG.APPLICATION_AMOUNT.toLocaleString("en-IN")}
+                    Register Now — ₹{CONFIG.APPLICATION_AMOUNT.toLocaleString("en-IN")}
                   </>
                 ) : (
                   <>
                     <Lock size={15} aria-hidden="true" className="inline mr-1.5" />
-                    Applications Closed
+                    Registrations Closed
                   </>
                 )}
               </a>
+              <RegDates variant="dark" />
               <p className="text-white/30 text-[0.68rem] mt-2 text-center">
-                Enquiry form above is free · Apply initiates a ₹{CONFIG.APPLICATION_AMOUNT.toLocaleString("en-IN")} Razorpay payment
+                Enquiry form above is free · Register Now initiates a ₹{CONFIG.APPLICATION_AMOUNT.toLocaleString("en-IN")} Razorpay payment
               </p>
             </div>
           </Reveal>

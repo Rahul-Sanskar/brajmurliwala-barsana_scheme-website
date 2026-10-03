@@ -80,17 +80,22 @@ export const CONFIG = {
   APPLICATION_AMOUNT: 21000,
 
   /**
-   * "OPEN"   — applications are being accepted; APPLY NOW button is enabled.
-   * "CLOSED" — applications are paused; button is visually disabled.
+   * "OPEN"   — registrations are being accepted; REGISTER NOW button is enabled.
+   * "CLOSED" — registrations are paused; button is visually disabled.
    */
   APPLICATION_STATUS: "OPEN" as "OPEN" | "CLOSED",
 
   /**
    * Set to true when Razorpay credentials are configured in .env.local.
-   * When false the APPLY NOW button shows a "Payment not configured" notice
+   * When false the REGISTER NOW button shows a "Payment not configured" notice
    * instead of initiating a checkout — prevents accidental live charges.
    */
   RAZORPAY_ENABLED: true,
+
+  /** Registration window & allotment — displayed beneath every Register Now button */
+  REGISTRATION_START: "5 Oct 2026",
+  REGISTRATION_END:   "22 Oct 2026",
+  ALLOTMENT_DATE:     "25 Oct 2026",
 } as const;
 
 export const PROJECT = {
@@ -189,7 +194,7 @@ export const PROJECT = {
       title: "ब्रज मुरलीवाला रेजीडेंसी",
       location: "गोवर्धन रोड, बरसाना",
       message: "⚠️ केवल 50 यूनिट बचे हैं — जल्दी करें!\nश्री राधा रानी की नगरी में अपना घर पाएं।\nमंदिर, कीर्ति मंदिर और बस स्टैंड के बिल्कुल पास।",
-      ctaPrimary: "अभी आवेदन करें",
+      ctaPrimary: "अभी रजिस्टर करें",
       ctaSecondary: "प्रोजेक्ट देखें",
     },
     {
@@ -577,7 +582,7 @@ export const NAV_ANCHORS: NavAnchor[] = [
   { id: "location",      label: "Location",     href: "#location" },
   { id: "faq",           label: "FAQ",          href: "#faq" },
   { id: "contact",       label: "Contact",      href: "#contact" },
-  { id: "application",   label: "Apply Now",    href: "#application", primary: true },
+  { id: "application",   label: "Register Now",  href: "#application", primary: true },
 ];
 
 export const SITE_LINKS = {

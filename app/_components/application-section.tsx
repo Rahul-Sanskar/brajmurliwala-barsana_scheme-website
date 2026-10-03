@@ -10,6 +10,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FileText, Lock, AlertTriangle, CheckCircle2, ShieldCheck } from "lucide-react";
 import { CONFIG, PROJECT } from "@/app/_data/project";
+import { RegDates } from "@/app/_components/reg-dates";
 
 /* ── Razorpay types ─────────────────────────────────────────────── */
 interface RazorpayOptions {
@@ -99,7 +100,7 @@ export function ApplicationSection() {
           <div className="flex items-center gap-2.5">
             <FileText size={15} className="text-bmu-orange" aria-hidden="true" />
             <span className="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-white/80">
-              Application / Registration
+              Registration
             </span>
           </div>
           {isOpen ? (
@@ -152,11 +153,13 @@ export function ApplicationSection() {
               {loading ? (
                 <><span className="app-spinner" aria-hidden="true" /> Processing…</>
               ) : !isOpen ? (
-                <><Lock size={14} aria-hidden="true" /> Applications Closed</>
+                <><Lock size={14} aria-hidden="true" /> Registrations Closed</>
               ) : (
-                <><FileText size={14} aria-hidden="true" /> Apply Now — Block Your Unit</>
+                <><FileText size={14} aria-hidden="true" /> Register Now</>
               )}
             </button>
+
+            <RegDates variant="light" />
 
             {error && (
               <div className="flex items-start gap-2 text-[0.78rem] text-red-700 bg-red-50 border border-red-200 px-3 py-2" role="alert">

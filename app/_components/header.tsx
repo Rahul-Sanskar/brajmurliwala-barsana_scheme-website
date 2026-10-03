@@ -7,6 +7,7 @@ import { Menu, X, Phone, FileText } from "lucide-react";
 import { NAV_ANCHORS, PROJECT } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
 import { useEnquiry } from "@/app/_components/enquiry-trigger";
+import { RegDates } from "@/app/_components/reg-dates";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -84,14 +85,20 @@ export function Header() {
                 <Phone size={13} aria-hidden="true" />
                 {PROJECT.contact.phonePrimary}
               </button>
-              <a
-                href="#application"
-                className="btn-apply"
-                style={{ padding: "0.5rem 1rem", fontSize: "0.7rem", width: "auto" }}
-              >
-                <FileText size={13} aria-hidden="true" />
-                Apply Now
-              </a>
+              {/* Register Now — with date tooltip */}
+              <div className="flex flex-col items-end gap-0.5">
+                <a
+                  href="#application"
+                  className="btn-apply"
+                  style={{ padding: "0.5rem 1rem", fontSize: "0.7rem", width: "auto" }}
+                >
+                  <FileText size={13} aria-hidden="true" />
+                  Register Now
+                </a>
+                <span className="text-[0.6rem] text-white/50 whitespace-nowrap">
+                  5–22 Oct · Allotment 25 Oct
+                </span>
+              </div>
             </div>
 
             {/* Mobile hamburger */}
@@ -176,8 +183,9 @@ export function Header() {
               onClick={() => setOpen(false)}
             >
               <FileText size={14} aria-hidden="true" />
-              Apply Now — ₹{PROJECT.pricing && "21,000"}
+              Register Now
             </a>
+            <RegDates variant="dark" />
           </div>
         </aside>
       </div>

@@ -1893,3 +1893,22 @@ mark.hero-hl-divine {
   .units-popup { padding: 1.75rem 1.25rem 1.25rem; }
   .units-popup-heading { font-size: 1.3rem; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   REG-DATES — registration & allotment date strip under Register Now
+   ═══════════════════════════════════════════════════════════════════ */
+.reg-dates {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  font-size: 0.7rem;
+  margin-top: 0.5rem;
+}
+.reg-dates-light { border-color: var(--color-bmu-line); background: #faf8f6; }
+.reg-dates-dark  { border-color: rgba(255,255,255,0.12); background: rgba(0,0,0,0.18); }
+.reg-dates-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.6rem;
+}

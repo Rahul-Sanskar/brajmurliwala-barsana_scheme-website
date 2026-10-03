@@ -78,7 +78,7 @@ export function HeroCarousel() {
   const kicker     = slide.kicker      ?? PROJECT.portal.name;
   const title      = slide.title       ?? PROJECT.name;
   const location   = slide.location    ?? PROJECT.location.short;
-  const ctaPrimary   = slide.ctaPrimary   ?? "Apply Now";
+  const ctaPrimary   = slide.ctaPrimary   ?? "Register Now";
   const ctaSecondary = slide.ctaSecondary ?? "View Project";
   const msgLines   = slide.message.split("\n");
   const isScheme   = kicker === PROJECT.portal.name || kicker === "बरसाना अर्बन हाउसिंग स्कीम";

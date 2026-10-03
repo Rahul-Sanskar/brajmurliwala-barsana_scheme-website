@@ -69,7 +69,7 @@ export function Footer() {
             <li>
               <a href="#application" className="footer-muted hover:text-bmu-orange flex items-center gap-2 transition-colors font-semibold">
                 <FileText size={13} className="text-bmu-orange" aria-hidden="true" />
-                Apply Online
+                Register Now
               </a>
             </li>
           </ul>
