@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
 
 @theme inline {
   --color-bmu-navy: #0F2744;
