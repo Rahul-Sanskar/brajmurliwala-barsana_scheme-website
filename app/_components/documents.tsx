@@ -197,20 +197,12 @@ export function Documents() {
                         <div className="flex items-center gap-2">
                           <button
                             type="button"
-                            className="btn-outline px-2 py-1 text-[0.7rem]"
+                            className="btn-secondary px-2 py-1 text-[0.7rem]"
                             aria-label={`Preview ${doc.title}`}
                             onClick={() => setPreviewDoc(doc)}
                           >
-                            <Eye size={12} aria-hidden="true" /> Preview
+                            <Eye size={12} aria-hidden="true" /> Preview &amp; Download
                           </button>
-                          <a
-                            href={doc.file}
-                            download
-                            className="btn-primary px-2 py-1 text-[0.7rem] inline-flex items-center gap-1"
-                            aria-label={`Download ${doc.title}`}
-                          >
-                            <Download size={12} aria-hidden="true" /> Download
-                          </a>
                         </div>
                       ) : (
                         <button disabled className="inline-flex items-center gap-1 text-[0.7rem] text-bmu-muted border border-bmu-line px-2 py-1 opacity-55 cursor-not-allowed">
@@ -282,18 +274,11 @@ export function Documents() {
                   <>
                     <button
                       type="button"
-                      className="btn-outline px-3 py-1"
+                      className="btn-secondary px-3 py-1"
                       onClick={() => setPreviewDoc(doc)}
                     >
-                      <Eye size={12} aria-hidden="true" /> Preview
+                      <Eye size={12} aria-hidden="true" /> Preview &amp; Download
                     </button>
-                    <a
-                      href={doc.file}
-                      download
-                      className="btn-primary px-3 py-1 inline-flex items-center gap-1"
-                    >
-                      <Download size={12} aria-hidden="true" /> Download
-                    </a>
                   </>
                 ) : (
                   <button disabled className="inline-flex items-center gap-1.5 text-[0.75rem] text-bmu-muted border border-bmu-line px-3 py-1.5 opacity-55 cursor-not-allowed">
