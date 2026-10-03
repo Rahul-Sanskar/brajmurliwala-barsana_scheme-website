@@ -7,21 +7,6 @@ export function PriceList() {
     <section id="pricing" aria-labelledby="pricing-heading" className="section-wrapper">
       <div className="container-x">
 
-        {/* Scarcity alert bar */}
-        <div className="flex items-center gap-3 bg-bmu-red text-white px-4 py-3 mb-5 border-l-4 border-bmu-orange">
-          <span className="text-lg" aria-hidden="true">⚠️</span>
-          <p className="text-[0.85rem] font-bold leading-snug flex-1">
-            Only 50 units remaining at the pre-launch price.{" "}
-            <span className="font-black text-bmu-orange-100">
-              Price rises from ₹7,999 → ₹8,499/sq.ft. after launch.
-            </span>{" "}
-            Lock in your unit today before it&apos;s too late.
-          </p>
-          <a href="#application" className="btn-apply flex-shrink-0 ml-auto whitespace-nowrap text-[0.78rem]">
-            Register Now
-          </a>
-        </div>
-
         <div className="section-header-row">
           <div>
             <div className="section-kicker">Investment Details</div>

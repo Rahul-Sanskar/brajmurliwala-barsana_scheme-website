@@ -50,7 +50,6 @@ export function FloorPlans() {
             <h2 id="fp-heading" className="section-title">Floor Plans</h2>
             <span className="section-rule" />
           </div>
-          <a href="#application" className="btn-apply flex-shrink-0">Register Now</a>
         </div>
 
         {/* Config tabs */}

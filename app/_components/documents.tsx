@@ -322,18 +322,7 @@ export function Documents() {
         </div>
 
         {/* Contact strip */}
-        <div className="mt-5 p-4 bg-bmu-red-50 border border-bmu-red-100">
-          <p className="text-[0.85rem] text-bmu-ink">
-            For immediate document requests, contact{" "}
-            <a href={`tel:${PROJECT.contact.phonePrimary.replace(/\s/g, "")}`} className="font-semibold text-bmu-red hover:text-bmu-orange">
-              {PROJECT.contact.phonePrimary}
-            </a>{" "}
-            or{" "}
-            <a href={`mailto:${PROJECT.contact.email}`} className="font-semibold text-bmu-red hover:text-bmu-orange">
-              {PROJECT.contact.email}
-            </a>.
-          </p>
-        </div>
+
       </div>
 
       {/* PDF viewer modal */}
