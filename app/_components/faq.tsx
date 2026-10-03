@@ -33,14 +33,9 @@ export function FAQ() {
               <p className="text-[0.82rem] text-bmu-muted mb-3 leading-relaxed">
                 Our team is available to answer any queries about the project.
               </p>
-              <div className="flex flex-col gap-2">
-                <EnquiryButton className="btn-secondary text-center">
-                  Talk to Our Team
-                </EnquiryButton>
-                <EnquiryButton className="btn-outline text-center">
-                  Submit Enquiry
-                </EnquiryButton>
-              </div>
+              <a href="#application" className="btn-apply block text-center">
+                Register Now
+              </a>
             </div>
           </Reveal>
 

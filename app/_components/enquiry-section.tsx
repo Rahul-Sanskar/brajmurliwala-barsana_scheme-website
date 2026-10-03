@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Send, CheckCircle, AlertTriangle, X, FileText, Lock } from "lucide-react";
+import { Send, CheckCircle, AlertTriangle, X } from "lucide-react";
 import { PROJECT, CONFIG } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
 import { Reveal } from "@/app/_components/reveal-hooks";
@@ -256,9 +256,9 @@ export function EnquirySection() {
       <div className="container-x">
         <div className="grid lg:grid-cols-2 gap-10 items-start">
 
-          {/* Left — info + Apply CTA */}
+          {/* Left — info + Register Now CTA */}
           <Reveal>
-            <div className="section-kicker text-bmu-orange mb-1">Enquire / Apply Now</div>
+            <div className="section-kicker text-bmu-orange mb-1">Register Now</div>
             <h2
               id="enquiry-heading"
               className="text-white font-bold leading-tight mb-2"
@@ -288,31 +288,16 @@ export function EnquirySection() {
             {/* Contact details */}
             <div className="space-y-2.5 mb-7">
               {[
-                {
-                  label: "Phone",
-                  value: PROJECT.contact.phonePrimary,
-                  href:  `tel:${PROJECT.contact.phonePrimary.replace(/\s/g, "")}`,
-                },
-                {
-                  label: "Email",
-                  value: PROJECT.contact.email,
-                  href:  `mailto:${PROJECT.contact.email}`,
-                },
-                {
-                  label: "Address",
-                  value: `${PROJECT.location.address}, ${PROJECT.location.city}`,
-                  href:  undefined,
-                },
+                { label: "Phone",   value: PROJECT.contact.phonePrimary,   href: `tel:${PROJECT.contact.phonePrimary.replace(/\s/g, "")}` },
+                { label: "Email",   value: PROJECT.contact.email,           href: `mailto:${PROJECT.contact.email}` },
+                { label: "Address", value: `${PROJECT.location.address}, ${PROJECT.location.city}`, href: undefined },
               ].map((r) => (
                 <div key={r.label} className="text-[0.87rem] text-white/75">
                   <span className="font-bold text-white/40 uppercase tracking-[0.1em] text-[0.65rem] mr-2">
                     {r.label}
                   </span>
                   {r.href ? (
-                    <a
-                      href={r.href}
-                      className="font-semibold text-white hover:text-bmu-orange-100 transition-colors"
-                    >
+                    <a href={r.href} className="font-semibold text-white hover:text-bmu-orange-100 transition-colors">
                       {r.value}
                     </a>
                   ) : (
@@ -322,13 +307,10 @@ export function EnquirySection() {
               ))}
             </div>
 
-            {/* Divider */}
-            <div className="enquiry-action-divider">Or apply directly</div>
-
-            {/* Formal application block */}
+            {/* Register Now block */}
             <div className="bg-black/20 border border-white/15 p-5">
               <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-bmu-orange mb-1">
-                ⚡ Formal Application — Block Your Unit Now
+                ⚡ Block Your Unit Now
               </p>
               <p className="text-white font-bold text-[1rem] mb-1">
                 Reserve Before Someone Else Does
@@ -339,28 +321,12 @@ export function EnquirySection() {
               </p>
               <a
                 href="#application"
-                className={cn(
-                  "btn-apply block text-center",
-                  !isOpen && "opacity-50 pointer-events-none"
-                )}
+                className={cn("btn-apply block text-center", !isOpen && "opacity-50 pointer-events-none")}
                 aria-disabled={!isOpen}
               >
-                {isOpen ? (
-                  <>
-                    <FileText size={15} aria-hidden="true" className="inline mr-1.5" />
-                    Register Now — ₹{CONFIG.APPLICATION_AMOUNT.toLocaleString("en-IN")}
-                  </>
-                ) : (
-                  <>
-                    <Lock size={15} aria-hidden="true" className="inline mr-1.5" />
-                    Registrations Closed
-                  </>
-                )}
+                {isOpen ? "Register Now" : "Registrations Closed"}
               </a>
               <RegDates variant="dark" />
-              <p className="text-white/30 text-[0.68rem] mt-2 text-center">
-                Enquiry form above is free · Register Now initiates a ₹{CONFIG.APPLICATION_AMOUNT.toLocaleString("en-IN")} Razorpay payment
-              </p>
             </div>
           </Reveal>
 

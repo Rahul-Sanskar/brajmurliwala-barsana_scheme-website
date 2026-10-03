@@ -1,25 +1,25 @@
 "use client";
 
-import { EnquiryButton } from "@/app/_components/enquiry-trigger";
 import { PROJECT, formatSqftRange, formatLakhs } from "@/app/_data/project";
 
 export function PriceList() {
   return (
     <section id="pricing" aria-labelledby="pricing-heading" className="section-wrapper">
       <div className="container-x">
+
         {/* Scarcity alert bar */}
         <div className="flex items-center gap-3 bg-bmu-red text-white px-4 py-3 mb-5 border-l-4 border-bmu-orange">
           <span className="text-lg" aria-hidden="true">⚠️</span>
-          <p className="text-[0.85rem] font-bold leading-snug">
+          <p className="text-[0.85rem] font-bold leading-snug flex-1">
             Only 50 units remaining at the pre-launch price.{" "}
             <span className="font-black text-bmu-orange-100">
               Price rises from ₹7,999 → ₹8,499/sq.ft. after launch.
             </span>{" "}
             Lock in your unit today before it&apos;s too late.
           </p>
-          <EnquiryButton className="btn-primary flex-shrink-0 ml-auto whitespace-nowrap text-[0.78rem]">
-            Enquire Now
-          </EnquiryButton>
+          <a href="#application" className="btn-apply flex-shrink-0 ml-auto whitespace-nowrap text-[0.78rem]">
+            Register Now
+          </a>
         </div>
 
         <div className="section-header-row">
@@ -28,15 +28,14 @@ export function PriceList() {
             <h2 id="pricing-heading" className="section-title">Price List</h2>
             <span className="section-rule" />
           </div>
-          <EnquiryButton className="btn-primary flex-shrink-0">Get Price Quote</EnquiryButton>
         </div>
 
         {/* Rate summary strip */}
         <div className="grid sm:grid-cols-3 gap-px bg-bmu-line mb-6">
           {[
-            { label: "Pre-Launch Rate",   value: `₹${PROJECT.pricing.preLaunchRatePerSqft.toLocaleString("en-IN")} / sq.ft.`, note: "⚡ Book NOW — limited units", bar: "bg-bmu-orange" },
-            { label: "Post-Launch Rate",  value: `₹${PROJECT.pricing.postLaunchRatePerSqft.toLocaleString("en-IN")} / sq.ft.`, note: "Price after launch — act before!", bar: "bg-bmu-red-700" },
-            { label: "Bank Loan",         value: `Up to ${PROJECT.pricing.bankLoanUptoPercent}%`, note: "Low down payment — apply today", bar: "bg-bmu-green-600" },
+            { label: "Pre-Launch Rate",  value: `₹${PROJECT.pricing.preLaunchRatePerSqft.toLocaleString("en-IN")} / sq.ft.`, note: "⚡ Register NOW — limited units", bar: "bg-bmu-orange" },
+            { label: "Post-Launch Rate", value: `₹${PROJECT.pricing.postLaunchRatePerSqft.toLocaleString("en-IN")} / sq.ft.`, note: "Price after launch — act before!", bar: "bg-bmu-red-700" },
+            { label: "Bank Loan",        value: `Up to ${PROJECT.pricing.bankLoanUptoPercent}%`, note: "Low down payment — register today", bar: "bg-bmu-green-600" },
           ].map((r) => (
             <div key={r.label} className="bg-white overflow-hidden">
               <div className={`card-header-bar ${r.bar}`}>{r.label}</div>
@@ -50,35 +49,39 @@ export function PriceList() {
 
         {/* Desktop table */}
         <div className="hidden md:block table-scroll border border-bmu-line">
-            <table className="institutional-table">
-              <thead>
-                <tr>
-                  <th>Configuration</th>
-                  <th>Super Area</th>
-                  <th>Pre-Launch Rate</th>
-                  <th>Post-Launch Rate</th>
-                  <th>Starting Price</th>
-                  <th>Furnished</th>
-                  <th>Availability</th>
-                  <th>Action</th>
+          <table className="institutional-table">
+            <thead>
+              <tr>
+                <th>Configuration</th>
+                <th>Super Area</th>
+                <th>Pre-Launch Rate</th>
+                <th>Post-Launch Rate</th>
+                <th>Starting Price</th>
+                <th>Furnished</th>
+                <th>Availability</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {PROJECT.unitConfigs.map((u) => (
+                <tr key={u.id}>
+                  <td className="font-bold text-bmu-ink">{u.name}</td>
+                  <td>{formatSqftRange(u.superAreaSqftMin, u.superAreaSqftMax)}</td>
+                  <td>₹{u.preLaunchRatePerSqft.toLocaleString("en-IN")}/sq.ft.</td>
+                  <td>₹{u.postLaunchRatePerSqft.toLocaleString("en-IN")}/sq.ft.</td>
+                  <td className="font-semibold">{u.startingPrice ? formatLakhs(u.startingPrice) : "Contact for details"}</td>
+                  <td>{u.furnishedAvailable ? "✓ Available" : "—"}</td>
+                  <td><span className={u.status === "Available" ? "avail-badge-available" : "avail-badge-enquire"}>{u.status}</span></td>
+                  <td>
+                    <a href="#application" className="btn-apply px-3 py-1.5 text-[0.72rem] inline-flex items-center gap-1">
+                      Register Now
+                    </a>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {PROJECT.unitConfigs.map((u) => (
-                  <tr key={u.id}>
-                    <td className="font-bold text-bmu-ink">{u.name}</td>
-                    <td>{formatSqftRange(u.superAreaSqftMin, u.superAreaSqftMax)}</td>
-                    <td>₹{u.preLaunchRatePerSqft.toLocaleString("en-IN")}/sq.ft.</td>
-                    <td>₹{u.postLaunchRatePerSqft.toLocaleString("en-IN")}/sq.ft.</td>
-                    <td className="font-semibold">{u.startingPrice ? formatLakhs(u.startingPrice) : "Contact for details"}</td>
-                    <td>{u.furnishedAvailable ? "✓ Available" : "—"}</td>
-                    <td><span className={u.status === "Available" ? "avail-badge-available" : "avail-badge-enquire"}>{u.status}</span></td>
-                    <td><EnquiryButton className="btn-primary px-3 py-1.5 text-[0.72rem]">Enquire</EnquiryButton></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {/* Mobile stacked cards */}
         <div className="md:hidden space-y-4">
@@ -102,7 +105,9 @@ export function PriceList() {
                 ))}
               </div>
               <div className="px-4 py-3">
-                <EnquiryButton className="btn-primary w-full justify-center">Enquire Now</EnquiryButton>
+                <a href="#application" className="btn-apply block text-center">
+                  Register Now
+                </a>
               </div>
             </div>
           ))}
@@ -110,7 +115,7 @@ export function PriceList() {
 
         <p className="text-[0.72rem] text-bmu-muted mt-4">
           * Prices are indicative and subject to change. Government charges and applicable taxes extra.
-          Pre-launch rate valid for limited bookings only — secure yours before the price revision.
+          Pre-launch rate valid for limited registrations only — secure yours before the price revision.
         </p>
       </div>
     </section>

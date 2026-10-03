@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 import { AlertTriangle, Clock, Flame } from "lucide-react";
 import { CONFIG } from "@/app/_data/project";
-import { useEnquiry } from "@/app/_components/enquiry-trigger";
 
 export function UrgencyBanner() {
   const [visible, setVisible] = useState(true);
-  const { open } = useEnquiry();
 
   useEffect(() => {
     let ticking = false;
@@ -55,9 +53,9 @@ export function UrgencyBanner() {
 
           <div className="urgency-cta-wrap">
             <Clock size={13} className="flex-shrink-0" aria-hidden="true" />
-            <button type="button" onClick={open} className="urgency-cta">
-              Enquire Now — Free
-            </button>
+            <a href="#application" className="urgency-cta">
+              Register Now
+            </a>
           </div>
 
         </div>

@@ -6,7 +6,6 @@ import { Maximize2, X } from "lucide-react";
 import { PROJECT, formatSqftRange } from "@/app/_data/project";
 import { cn } from "@/app/_lib/utils";
 import { Reveal } from "@/app/_components/reveal-hooks";
-import { EnquiryButton } from "@/app/_components/enquiry-trigger";
 
 type Plan = { src: string; alt: string; type: string };
 type Tab  = { id: string; label: string; plans: Plan[]; config: typeof PROJECT.unitConfigs[0] };
@@ -51,9 +50,7 @@ export function FloorPlans() {
             <h2 id="fp-heading" className="section-title">Floor Plans</h2>
             <span className="section-rule" />
           </div>
-          <EnquiryButton className="btn-primary flex-shrink-0">
-            Enquire for Details
-          </EnquiryButton>
+          <a href="#application" className="btn-apply flex-shrink-0">Register Now</a>
         </div>
 
         {/* Config tabs */}
@@ -147,9 +144,9 @@ export function FloorPlans() {
                 >
                   <Maximize2 size={14} aria-hidden="true" /> View Full Plan
                 </button>
-                <EnquiryButton className="btn-outline w-full justify-center">
-                  Enquire
-                </EnquiryButton>
+                <a href="#application" className="btn-apply block text-center">
+                  Register Now
+                </a>
               </div>
             </div>
           </div>

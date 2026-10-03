@@ -1,6 +1,5 @@
 "use client";
 
-import { EnquiryButton } from "@/app/_components/enquiry-trigger";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { PROJECT } from "@/app/_data/project";
 import { Reveal } from "@/app/_components/reveal-hooks";
@@ -17,7 +16,7 @@ export function ContactSection() {
           <h2 id="contact-heading" className="section-title">Contact Us</h2>
           <span className="section-rule" />
           <p className="prose-body mt-1">
-            Reach the Braj Murliwala Residency team for site visits, pricing, documents and applications.
+            Reach the Braj Murliwala Residency team for site visits, pricing, documents and registration.
           </p>
         </div>
 
@@ -35,19 +34,13 @@ export function ContactSection() {
                     ))}</div>
                   )},
                   { Icon: Phone, label: "Phone", content: (
-                    <span className="text-[0.9rem] font-semibold text-bmu-ink">
-                      {contact.phonePrimary}
-                    </span>
+                    <span className="text-[0.9rem] font-semibold text-bmu-ink">{contact.phonePrimary}</span>
                   )},
                   { Icon: Mail, label: "Email", content: (
-                    <span className="text-[0.9rem] font-semibold text-bmu-ink break-all">
-                      {contact.email}
-                    </span>
+                    <span className="text-[0.9rem] font-semibold text-bmu-ink break-all">{contact.email}</span>
                   )},
                   { Icon: MessageCircle, label: "WhatsApp", content: (
-                    <span className="text-[0.9rem] font-semibold text-bmu-ink">
-                      {contact.whatsapp}
-                    </span>
+                    <span className="text-[0.9rem] font-semibold text-bmu-ink">{contact.whatsapp}</span>
                   )},
                 ].map(({ Icon, label, content }) => (
                   <div key={label} className="contact-info-row px-4">
@@ -61,16 +54,9 @@ export function ContactSection() {
               </div>
             </div>
 
-            {/* All CTAs open enquiry modal */}
-            <div className="flex flex-wrap gap-2">
-              <EnquiryButton className="btn-secondary">
-                <Phone size={13} aria-hidden="true" /> Call Now
-              </EnquiryButton>
-              <EnquiryButton className="btn-outline">
-                <MessageCircle size={13} aria-hidden="true" /> WhatsApp
-              </EnquiryButton>
-              <EnquiryButton className="btn-outline">Submit Enquiry</EnquiryButton>
-            </div>
+            <a href="#application" className="btn-apply block text-center">
+              Register Now
+            </a>
           </Reveal>
 
           {/* Map */}
