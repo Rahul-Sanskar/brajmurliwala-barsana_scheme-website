@@ -4,7 +4,6 @@ import "./globals.css";
 import { TopBar } from "./_components/top-bar";
 import { Header } from "./_components/header";
 import { Footer } from "./_components/footer";
-import { WhatsAppFloat } from "./_components/whatsapp-float";
 import { EnquiryProvider } from "./_components/enquiry-trigger";
 import { PROJECT } from "./_data/project";
 
@@ -164,7 +163,6 @@ export default function RootLayout({
           </EnquiryProvider>
         </main>
         <Footer />
-        <WhatsAppFloat />
       </body>
     </html>
   );
