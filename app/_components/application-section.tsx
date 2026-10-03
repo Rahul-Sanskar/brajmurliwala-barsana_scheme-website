@@ -142,25 +142,6 @@ export function ApplicationSection() {
               Reserve your unit at {PROJECT.name},&nbsp;{PROJECT.location.short} right now.
             </p>
 
-            <button
-              type="button"
-              className="btn-apply"
-              onClick={handleApply}
-              disabled={!isOpen || loading}
-              aria-disabled={!isOpen || loading}
-              aria-busy={loading}
-            >
-              {loading ? (
-                <><span className="app-spinner" aria-hidden="true" /> Processing…</>
-              ) : !isOpen ? (
-                <><Lock size={14} aria-hidden="true" /> Registrations Closed</>
-              ) : (
-                <><FileText size={14} aria-hidden="true" /> Register Now</>
-              )}
-            </button>
-
-            <RegDates variant="light" />
-
             {error && (
               <div className="flex items-start gap-2 text-[0.78rem] text-red-700 bg-red-50 border border-red-200 px-3 py-2" role="alert">
                 <AlertTriangle size={14} className="flex-shrink-0 mt-0.5 text-red-600" aria-hidden="true" />
@@ -169,7 +150,7 @@ export function ApplicationSection() {
             )}
           </div>
 
-          {/* Pane 2 — Amount */}
+          {/* Pane 2 — Amount + Register Now button */}
           <div className="app-pane flex flex-col justify-center gap-2"
                style={{ background: "#fff" }}>
             <div className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-bmu-muted mb-0.5">
@@ -184,7 +165,7 @@ export function ApplicationSection() {
               One-time refundable application fee blocks your unit.{" "}
               <span className="font-semibold text-bmu-ink">Act now before someone else takes it.</span>
             </p>
-            <div className="flex flex-col gap-1 mt-1">
+            <div className="flex flex-col gap-1 mb-2">
               <div className="flex items-center gap-1.5 text-[0.72rem] text-bmu-muted">
                 <ShieldCheck size={12} className="text-bmu-green flex-shrink-0" aria-hidden="true" />
                 Secured via Razorpay · 256-bit SSL
@@ -194,6 +175,34 @@ export function ApplicationSection() {
                 Payment powered by Razorpay
               </div>
             </div>
+
+            {/* Register Now — full width, large, below ₹21,000 */}
+            <button
+              type="button"
+              className="btn-apply w-full justify-center"
+              style={{ fontSize: "1rem", padding: "0.85rem 1rem", letterSpacing: "0.08em" }}
+              onClick={handleApply}
+              disabled={!isOpen || loading}
+              aria-disabled={!isOpen || loading}
+              aria-busy={loading}
+            >
+              {loading ? (
+                <><span className="app-spinner" aria-hidden="true" /> Processing…</>
+              ) : !isOpen ? (
+                <><Lock size={16} aria-hidden="true" /> Registrations Closed</>
+              ) : (
+                <><FileText size={16} aria-hidden="true" /> Register Now</>
+              )}
+            </button>
+
+            <RegDates variant="light" />
+
+            {error && (
+              <div className="flex items-start gap-2 text-[0.78rem] text-red-700 bg-red-50 border border-red-200 px-3 py-2 mt-1" role="alert">
+                <AlertTriangle size={14} className="flex-shrink-0 mt-0.5 text-red-600" aria-hidden="true" />
+                <span>{error}</span>
+              </div>
+            )}
           </div>
 
           {/* Pane 3 — Configurations */}
