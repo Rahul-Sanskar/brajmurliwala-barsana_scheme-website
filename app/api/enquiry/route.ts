@@ -35,19 +35,7 @@ function escHtml(str: string): string {
 
 const ALLOWED_UNITS = new Set(["1bhk", "2bhk", "3bhk", "any"]);
 
-const ALLOWED_ORIGINS = new Set([
-  "https://www.brajmurliwala.online",
-  "https://brajmurliwala.online",
-  "http://localhost:3000",
-]);
-
 export async function POST(req: NextRequest) {
-  /* ── CSRF ───────────────────────────────────────────────────── */
-  const origin = req.headers.get("origin") ?? "";
-  if (!ALLOWED_ORIGINS.has(origin)) {
-    return NextResponse.json({ success: false, error: "Forbidden." }, { status: 403 });
-  }
-
   /* ── Parse body ─────────────────────────────────────────────── */
   let body: EnquiryBody;
   try {
