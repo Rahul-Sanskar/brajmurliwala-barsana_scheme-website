@@ -1,20 +1,33 @@
 "use client";
 
 /**
- * ApplicationSection — immediately below the hero.
- * Red/orange institutional strip.
- * Single Apply Now button (not duplicated).
- * Amount and status from CONFIG only — never hardcoded.
+ * ApplicationSection — 2-step registration flow:
+ *
+ * Step 1: User clicks "Register Now" → modal form appears
+ *         (Full Name, Mobile, Email, Unit Preference)
+ *
+ * Step 2: User clicks "Proceed to Payment" →
+ *         - Details POSTed to /api/enquiry (email notification)
+ *         - Razorpay payment gateway opens
+ *         - On success → /results page
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FileText, Lock, AlertTriangle, CheckCircle2, ShieldCheck } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  FileText, Lock, AlertTriangle, CheckCircle2,
+  ShieldCheck, X, ArrowRight, CreditCard,
+} from "lucide-react";
 import { CONFIG, PROJECT } from "@/app/_data/project";
+import { cn } from "@/app/_lib/utils";
 
 /* ── Razorpay types ─────────────────────────────────────────────── */
 interface RazorpayOptions {
   key: string; amount: number; currency: string;
   name: string; description: string; order_id: string;
+  prefill?: { name?: string; email?: string; contact?: string };
   handler: (r: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => void;
   theme?: { color?: string };
   modal?: { ondismiss?: () => void };
@@ -36,64 +49,342 @@ function loadRazorpayScript(): Promise<void> {
   });
 }
 
-export function ApplicationSection() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError]   = useState<string | null>(null);
+/* ── Form schema ────────────────────────────────────────────────── */
+const schema = z.object({
+  fullName:       z.string().min(2, "Enter your full name"),
+  mobile:         z.string().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit mobile number"),
+  email:          z.string().email("Enter a valid email address"),
+  unitPreference: z.string().min(1, "Select a configuration"),
+});
+type FormValues = z.infer<typeof schema>;
+
+/* ── Registration modal ─────────────────────────────────────────── */
+function RegistrationModal({ onClose }: { onClose: () => void }) {
+  const [step, setStep]         = useState<"form" | "paying">("form");
+  const [payError, setPayError] = useState<string | null>(null);
   const mountedRef = useRef(true);
   useEffect(() => () => { mountedRef.current = false; }, []);
 
-  const isOpen     = CONFIG.APPLICATION_STATUS === "OPEN";
-  const enabled    = CONFIG.RAZORPAY_ENABLED;
-  const amount     = CONFIG.APPLICATION_AMOUNT;
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({ resolver: zodResolver(schema) });
 
-  const handleApply = useCallback(async () => {
-    setError(null);
-    if (!enabled) { setError("Online payment not yet configured. Please call us."); return; }
-    setLoading(true);
+  const amount  = CONFIG.APPLICATION_AMOUNT;
+  const enabled = CONFIG.RAZORPAY_ENABLED;
+
+  /* Submit: send enquiry email then open Razorpay */
+  const onSubmit = async (data: FormValues) => {
+    setPayError(null);
+    setStep("paying");
+
+    /* 1. Send details to /api/enquiry (email notification) */
+    try {
+      await fetch("/api/enquiry", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName:       data.fullName,
+          mobile:         data.mobile,
+          email:          data.email,
+          unitPreference: data.unitPreference,
+          message:        "Registration payment initiated",
+        }),
+      });
+    } catch {
+      /* Non-fatal — proceed to payment even if email fails */
+    }
+
+    /* 2. Create Razorpay order */
+    if (!enabled) {
+      setPayError("Payment not configured. Please contact us.");
+      setStep("form");
+      return;
+    }
+
     try {
       await loadRazorpayScript();
       const res  = await fetch("/api/razorpay/create-order", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amountInr: amount }),
       });
-      const data = await res.json() as { orderId?: string; amount?: number; currency?: string; keyId?: string; error?: string; code?: string };
-      if (!res.ok || !data.orderId) {
-        if (mountedRef.current) setError(
-          data.code === "RAZORPAY_NOT_CONFIGURED" ? "Payment not configured." :
-          data.code === "APPLICATIONS_CLOSED"     ? "Applications are currently closed." :
-          data.error ?? "Could not initiate payment."
+      const orderData = await res.json() as {
+        orderId?: string; amount?: number; currency?: string;
+        keyId?: string; error?: string; code?: string;
+      };
+
+      if (!res.ok || !orderData.orderId) {
+        setPayError(
+          orderData.code === "RAZORPAY_NOT_CONFIGURED" ? "Payment not configured." :
+          orderData.code === "APPLICATIONS_CLOSED"     ? "Registrations are currently closed." :
+          orderData.error ?? "Could not initiate payment."
         );
-        setLoading(false); return;
+        setStep("form");
+        return;
       }
-      if (!window.Razorpay) { setError("Payment gateway unavailable."); setLoading(false); return; }
+
+      if (!window.Razorpay) {
+        setPayError("Payment gateway unavailable. Please try again.");
+        setStep("form");
+        return;
+      }
+
       new window.Razorpay({
-        key: data.keyId!, amount: data.amount!, currency: data.currency ?? "INR",
-        name: PROJECT.name, description: `Application Fee — ${PROJECT.portal.name}`,
-        order_id: data.orderId,
+        key:         orderData.keyId!,
+        amount:      orderData.amount!,
+        currency:    orderData.currency ?? "INR",
+        name:        PROJECT.name,
+        description: `Registration Fee — ${PROJECT.portal.name}`,
+        order_id:    orderData.orderId,
+        /* Pre-fill user details in Razorpay checkout */
+        prefill: {
+          name:    data.fullName,
+          email:   data.email,
+          contact: `+91${data.mobile}`,
+        },
         handler: async (r) => {
           try {
             const v = await fetch("/api/razorpay/verify", {
               method: "POST", headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ razorpay_order_id: r.razorpay_order_id, razorpay_payment_id: r.razorpay_payment_id, razorpay_signature: r.razorpay_signature }),
+              body: JSON.stringify({
+                razorpay_order_id:   r.razorpay_order_id,
+                razorpay_payment_id: r.razorpay_payment_id,
+                razorpay_signature:  r.razorpay_signature,
+              }),
             });
-            const vd = await v.json() as { success?: boolean; paymentId?: string; orderId?: string; amountInr?: number; error?: string };
+            const vd = await v.json() as {
+              success?: boolean; paymentId?: string;
+              orderId?: string; amountInr?: number; error?: string;
+            };
             const p = new URLSearchParams(vd.success
-              ? { status: "success", paymentId: vd.paymentId ?? r.razorpay_payment_id, orderId: vd.orderId ?? r.razorpay_order_id, amountInr: String(vd.amountInr ?? amount) }
-              : { status: "failed", reason: vd.error ?? "Verification failed." });
+              ? {
+                  status:    "success",
+                  paymentId: vd.paymentId ?? r.razorpay_payment_id,
+                  orderId:   vd.orderId   ?? r.razorpay_order_id,
+                  amountInr: String(vd.amountInr ?? amount),
+                  name:      data.fullName,
+                  unit:      data.unitPreference,
+                }
+              : { status: "failed", reason: vd.error ?? "Verification failed." }
+            );
             window.location.href = `/results?${p}`;
-          } catch { window.location.href = "/results?status=failed&reason=Verification+failed."; }
+          } catch {
+            window.location.href = "/results?status=failed&reason=Verification+failed.";
+          }
         },
         theme: { color: "#E87516" },
-        modal: { ondismiss: () => { if (mountedRef.current) { setLoading(false); window.location.href = "/results?status=cancelled"; } } },
+        modal: {
+          ondismiss: () => {
+            if (mountedRef.current) { setStep("form"); setPayError(null); }
+          },
+        },
       }).open();
     } catch (e) {
-      if (mountedRef.current) { setError(e instanceof Error ? e.message : "Unexpected error."); setLoading(false); }
+      if (mountedRef.current) {
+        setPayError(e instanceof Error ? e.message : "Unexpected error.");
+        setStep("form");
+      }
     }
-  }, [amount, enabled]);
+  };
+
+  return (
+    <div
+      className="modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reg-modal-heading"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <div className="bg-white w-full max-w-lg max-h-[95vh] overflow-y-auto relative">
+
+        {/* Header */}
+        <div className="card-header-bar bg-bmu-red-800 justify-between sticky top-0 z-10">
+          <div className="flex flex-col leading-tight">
+            <span id="reg-modal-heading" className="font-bold text-white text-[0.95rem]">
+              Registration — {PROJECT.name}
+            </span>
+            <span className="text-[0.65rem] text-white/60 font-normal">
+              Fill your details then proceed to payment
+            </span>
+          </div>
+          <button
+            type="button" onClick={onClose}
+            className="h-8 w-8 flex items-center justify-center bg-white/10 hover:bg-white/20 ml-3 flex-shrink-0"
+            aria-label="Close"
+          >
+            <X size={15} aria-hidden="true" />
+          </button>
+        </div>
+
+        {/* Urgency strip */}
+        <div className="bg-bmu-orange px-4 py-2">
+          <span className="text-[0.78rem] font-bold text-white">
+            ⚠️ Only 50 units left · ₹{amount.toLocaleString("en-IN")} registration fee
+          </span>
+        </div>
+
+        <div className="p-5 sm:p-6">
+
+          {/* Step indicators */}
+          <div className="flex items-center gap-2 mb-6">
+            <div className={cn(
+              "flex items-center justify-center w-7 h-7 rounded-full text-[0.75rem] font-bold border-2",
+              step === "form"
+                ? "bg-bmu-red text-white border-bmu-red"
+                : "bg-bmu-green text-white border-bmu-green"
+            )}>
+              {step === "paying" ? "✓" : "1"}
+            </div>
+            <span className="text-[0.8rem] font-semibold text-bmu-ink">Your Details</span>
+            <div className="flex-1 h-px bg-bmu-line mx-1" />
+            <div className={cn(
+              "flex items-center justify-center w-7 h-7 rounded-full text-[0.75rem] font-bold border-2",
+              step === "paying"
+                ? "bg-bmu-orange text-white border-bmu-orange"
+                : "border-bmu-line text-bmu-muted bg-white"
+            )}>
+              2
+            </div>
+            <span className={cn(
+              "text-[0.8rem] font-semibold",
+              step === "paying" ? "text-bmu-ink" : "text-bmu-muted"
+            )}>
+              Payment
+            </span>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
+
+            {/* Full Name */}
+            <div>
+              <label htmlFor="reg-fullName" className="form-label">
+                Full Name <span className="text-red-500" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="reg-fullName" type="text" autoComplete="name"
+                placeholder="As per Aadhaar / official ID"
+                className={cn("form-input", errors.fullName && "border-red-400")}
+                {...register("fullName")}
+              />
+              {errors.fullName && <p className="form-error" role="alert">{errors.fullName.message}</p>}
+            </div>
+
+            {/* Mobile */}
+            <div>
+              <label htmlFor="reg-mobile" className="form-label">
+                Mobile Number <span className="text-red-500" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="reg-mobile" type="tel" inputMode="numeric" autoComplete="tel"
+                placeholder="10-digit mobile number"
+                className={cn("form-input", errors.mobile && "border-red-400")}
+                {...register("mobile")}
+              />
+              {errors.mobile && <p className="form-error" role="alert">{errors.mobile.message}</p>}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label htmlFor="reg-email" className="form-label">
+                Email Address <span className="text-red-500" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="reg-email" type="email" autoComplete="email"
+                placeholder="your@email.com"
+                className={cn("form-input", errors.email && "border-red-400")}
+                {...register("email")}
+              />
+              {errors.email && <p className="form-error" role="alert">{errors.email.message}</p>}
+            </div>
+
+            {/* Unit Preference */}
+            <div>
+              <label htmlFor="reg-unit" className="form-label">
+                Unit Preference <span className="text-red-500" aria-hidden="true">*</span>
+              </label>
+              <select
+                id="reg-unit" defaultValue=""
+                className={cn("form-input form-select", errors.unitPreference && "border-red-400")}
+                {...register("unitPreference")}
+              >
+                <option value="" disabled>Select configuration</option>
+                <option value="1bhk">1 BHK — 881 to 895 sq.ft.</option>
+                <option value="2bhk">2 BHK — 1,395 to 1,675 sq.ft.</option>
+                <option value="3bhk">3 BHK — 1,916 to 1,982 sq.ft.</option>
+              </select>
+              {errors.unitPreference && <p className="form-error" role="alert">{errors.unitPreference.message}</p>}
+            </div>
+
+            {/* Payment error */}
+            {payError && (
+              <div className="flex items-start gap-2 text-[0.82rem] text-red-700 bg-red-50 border border-red-200 px-3 py-2.5" role="alert">
+                <AlertTriangle size={15} className="flex-shrink-0 mt-0.5" aria-hidden="true" />
+                <span>{payError}</span>
+              </div>
+            )}
+
+            {/* Amount summary */}
+            <div className="bg-bmu-stone border border-bmu-line px-4 py-3 flex items-center justify-between">
+              <div>
+                <div className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-bmu-muted">Registration Fee</div>
+                <div className="font-bold text-bmu-ink text-[1.4rem] leading-tight">
+                  ₹{amount.toLocaleString("en-IN")}
+                </div>
+              </div>
+              <div className="flex flex-col gap-1 text-right">
+                <div className="flex items-center gap-1 text-[0.7rem] text-bmu-muted justify-end">
+                  <ShieldCheck size={11} className="text-bmu-green" aria-hidden="true" />
+                  256-bit SSL secured
+                </div>
+                <div className="flex items-center gap-1 text-[0.7rem] text-bmu-muted justify-end">
+                  <CheckCircle2 size={11} className="text-bmu-green" aria-hidden="true" />
+                  Powered by Razorpay
+                </div>
+              </div>
+            </div>
+
+            {/* Submit button */}
+            <button
+              type="submit"
+              disabled={isSubmitting || step === "paying"}
+              className="btn-apply w-full justify-center"
+              style={{ fontSize: "1rem", padding: "0.85rem 1rem" }}
+            >
+              {step === "paying" || isSubmitting ? (
+                <><span className="app-spinner" aria-hidden="true" /> Opening Payment Gateway…</>
+              ) : (
+                <>
+                  <CreditCard size={16} aria-hidden="true" />
+                  Proceed to Payment
+                  <ArrowRight size={16} aria-hidden="true" />
+                </>
+              )}
+            </button>
+
+            <p className="text-[0.68rem] text-bmu-muted text-center">
+              Your details will be shared with {PROJECT.developer.name} for registration purposes.
+            </p>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main section ───────────────────────────────────────────────── */
+export function ApplicationSection() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const isOpen = CONFIG.APPLICATION_STATUS === "OPEN";
+  const amount = CONFIG.APPLICATION_AMOUNT;
 
   return (
     <section id="application" aria-labelledby="app-heading" className="app-section">
-      {/* ── Urgency bar ─────────────────────────────────────────── */}
+
+      {/* Status bar */}
       <div style={{ background: "rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
         <div className="container-x flex items-center justify-between py-2.5">
           <div className="flex items-center gap-2.5">
@@ -116,14 +407,12 @@ export function ApplicationSection() {
         </div>
       </div>
 
-      {/* ── Three white panes ───────────────────────────────────── */}
+      {/* Three panes */}
       <div className="container-x">
         <div className="app-grid" style={{ gap: "1px", background: "rgba(255,255,255,0.08)" }}>
 
-          {/* Pane 1 — Apply CTA */}
-          <div className="app-pane flex flex-col justify-center gap-3"
-               style={{ background: "#fff" }}>
-            {/* Scarcity badge */}
+          {/* Pane 1 — description */}
+          <div className="app-pane flex flex-col justify-center gap-3" style={{ background: "#fff" }}>
             {isOpen && (
               <div className="flex items-center gap-2 bg-red-50 border border-red-200 px-3 py-2">
                 <AlertTriangle size={14} className="text-bmu-red flex-shrink-0" aria-hidden="true" />
@@ -140,18 +429,20 @@ export function ApplicationSection() {
               Don&apos;t miss the pre-launch rate of ₹7,999/sq.ft. — price rises to ₹8,499 after launch.
               Reserve your unit at {PROJECT.name},&nbsp;{PROJECT.location.short} right now.
             </p>
-
-            {error && (
-              <div className="flex items-start gap-2 text-[0.78rem] text-red-700 bg-red-50 border border-red-200 px-3 py-2" role="alert">
-                <AlertTriangle size={14} className="flex-shrink-0 mt-0.5 text-red-600" aria-hidden="true" />
-                <span>{error}</span>
+            <div className="flex flex-col gap-1.5 mt-1">
+              <div className="flex items-start gap-2 text-[0.82rem] text-bmu-muted">
+                <span className="text-bmu-orange font-bold mt-0.5">①</span>
+                Fill your registration details
               </div>
-            )}
+              <div className="flex items-start gap-2 text-[0.82rem] text-bmu-muted">
+                <span className="text-bmu-orange font-bold mt-0.5">②</span>
+                Proceed to secure ₹{amount.toLocaleString("en-IN")} payment via Razorpay
+              </div>
+            </div>
           </div>
 
-          {/* Pane 2 — Amount + Register Now button */}
-          <div className="app-pane flex flex-col justify-center gap-2"
-               style={{ background: "#fff" }}>
+          {/* Pane 2 — amount + button */}
+          <div className="app-pane flex flex-col justify-center gap-2" style={{ background: "#fff" }}>
             <div className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-bmu-muted mb-0.5">
               Application Amount
             </div>
@@ -175,26 +466,23 @@ export function ApplicationSection() {
               </div>
             </div>
 
-            {/* Register Now — full width, large, below ₹21,000 */}
+            {/* Register Now → opens modal form */}
             <button
               type="button"
               className="btn-apply w-full justify-center"
               style={{ fontSize: "1rem", padding: "0.85rem 1rem", letterSpacing: "0.08em" }}
-              onClick={handleApply}
-              disabled={!isOpen || loading}
-              aria-disabled={!isOpen || loading}
-              aria-busy={loading}
+              onClick={() => setModalOpen(true)}
+              disabled={!isOpen}
+              aria-disabled={!isOpen}
             >
-              {loading ? (
-                <><span className="app-spinner" aria-hidden="true" /> Processing…</>
-              ) : !isOpen ? (
+              {!isOpen ? (
                 <><Lock size={16} aria-hidden="true" /> Registration Closed</>
               ) : (
                 <><FileText size={16} aria-hidden="true" /> Register Now</>
               )}
             </button>
 
-            {/* Dates strip — shows registration dates when open, allotment date when closed */}
+            {/* Dates strip */}
             {isOpen ? (
               <div className="border border-bmu-line bg-[#faf8f6] flex flex-col text-[0.7rem]">
                 <div className="flex items-center gap-2 px-3 py-1.5 border-b border-bmu-line">
@@ -215,18 +503,10 @@ export function ApplicationSection() {
                 <span className="font-bold text-bmu-ink ml-auto">{CONFIG.ALLOTMENT_DATE}</span>
               </div>
             )}
-
-            {error && (
-              <div className="flex items-start gap-2 text-[0.78rem] text-red-700 bg-red-50 border border-red-200 px-3 py-2 mt-1" role="alert">
-                <AlertTriangle size={14} className="flex-shrink-0 mt-0.5 text-red-600" aria-hidden="true" />
-                <span>{error}</span>
-              </div>
-            )}
           </div>
 
-          {/* Pane 3 — Configurations */}
-          <div className="app-pane flex flex-col justify-center gap-2"
-               style={{ background: "#fff" }}>
+          {/* Pane 3 — configurations */}
+          <div className="app-pane flex flex-col justify-center gap-2" style={{ background: "#fff" }}>
             <div className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-bmu-muted mb-0.5">
               Available Configurations
             </div>
@@ -243,8 +523,13 @@ export function ApplicationSection() {
               Same application fee for all configurations.
             </p>
           </div>
+
         </div>
       </div>
+
+      {/* Registration modal */}
+      {modalOpen && <RegistrationModal onClose={() => setModalOpen(false)} />}
+
     </section>
   );
 }
