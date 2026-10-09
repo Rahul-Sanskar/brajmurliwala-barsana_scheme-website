@@ -1,16 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
 /**
  * POST /api/enquiry
  *
- * Validates input then forwards to Web3Forms which emails
- * the submission to ENQUIRY_TO_EMAIL (set in env vars).
+ * Sends enquiry form submissions via Gmail SMTP using Nodemailer.
+ * Free, ~500 emails/day, no third-party service needed.
  *
- * Setup:
- *  1. Go to https://web3forms.com
- *  2. Enter Invest2realty@gmail.com → click "Create Access Key"
- *  3. Add to Hostinger env vars: WEB3FORMS_ACCESS_KEY=<key>
+ * Required env vars in Hostinger (and .env.local):
+ *   GMAIL_USER        = Invest2realty@gmail.com
+ *   GMAIL_APP_PASSWORD = xxxx xxxx xxxx xxxx   (16-char app password)
+ *   ENQUIRY_TO_EMAIL  = Invest2realty@gmail.com  (recipient — can be same)
+ *
+ * How to get Gmail App Password:
+ *   1. Go to myaccount.google.com → Security
+ *   2. Enable 2-Step Verification (required)
+ *   3. Search "App Passwords" → create one named "Brajmurliwala"
+ *   4. Copy the 16-character password → paste as GMAIL_APP_PASSWORD
  */
+
+export const runtime = "nodejs";
 
 interface EnquiryBody {
   fullName: string;
@@ -33,14 +42,19 @@ const ALLOWED_UNITS = new Set(["1bhk", "2bhk", "3bhk", "any"]);
 
 export async function POST(req: NextRequest) {
 
-  const accessKey = process.env.WEB3FORMS_ACCESS_KEY;
-  if (!accessKey) {
+  /* ── Env check ─────────────────────────────────────────────── */
+  const gmailUser    = process.env.GMAIL_USER;
+  const gmailPass    = process.env.GMAIL_APP_PASSWORD;
+  const toEmail      = process.env.ENQUIRY_TO_EMAIL ?? "Invest2realty@gmail.com";
+
+  if (!gmailUser || !gmailPass) {
     return NextResponse.json(
-      { success: false, error: "Email service not configured. Please try again later." },
+      { success: false, error: "Email service not configured." },
       { status: 503 }
     );
   }
 
+  /* ── Parse body ─────────────────────────────────────────────── */
   let body: EnquiryBody;
   try {
     body = await req.json() as EnquiryBody;
@@ -50,7 +64,7 @@ export async function POST(req: NextRequest) {
 
   const { fullName, mobile, email, unitPreference, message } = body;
 
-  /* Validate */
+  /* ── Validate ───────────────────────────────────────────────── */
   if (typeof fullName !== "string" || fullName.trim().length < 2 || fullName.trim().length > 100)
     return NextResponse.json({ success: false, error: "Invalid name." }, { status: 400 });
   if (typeof mobile !== "string" || !/^[6-9]\d{9}$/.test(mobile))
@@ -62,7 +76,7 @@ export async function POST(req: NextRequest) {
   if (typeof message === "string" && message.length > 1000)
     return NextResponse.json({ success: false, error: "Message too long." }, { status: 400 });
 
-  /* Escape */
+  /* ── Escape ─────────────────────────────────────────────────── */
   const safeName    = escHtml(fullName.trim());
   const safeMobile  = escHtml(mobile);
   const safeEmail   = escHtml(email.trim());
@@ -76,6 +90,7 @@ export async function POST(req: NextRequest) {
   };
   const safeUnit = unitLabel[unitPreference];
 
+  /* ── HTML email body ────────────────────────────────────────── */
   const htmlBody = `
 <!DOCTYPE html><html><head><meta charset="UTF-8"/></head>
 <body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#1a1a1a;">
@@ -100,7 +115,8 @@ export async function POST(req: NextRequest) {
       <td style="padding:10px 14px;font-weight:700;border-bottom:1px solid #e4ddd8;">Configuration</td>
       <td style="padding:10px 14px;border-bottom:1px solid #e4ddd8;font-weight:700;color:#E87516;">${safeUnit}</td>
     </tr>
-    ${safeMessage ? `<tr style="background:#f8f4f0;">
+    ${safeMessage ? `
+    <tr style="background:#f8f4f0;">
       <td style="padding:10px 14px;font-weight:700;border-bottom:1px solid #e4ddd8;vertical-align:top;">Message</td>
       <td style="padding:10px 14px;border-bottom:1px solid #e4ddd8;white-space:pre-wrap;">${safeMessage}</td>
     </tr>` : ""}
@@ -113,30 +129,30 @@ export async function POST(req: NextRequest) {
   </p>
 </body></html>`;
 
+  /* ── Send via Gmail SMTP ─────────────────────────────────────── */
   try {
-    const res = await fetch("https://api.web3forms.com/submit", {
-      method:  "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        access_key: accessKey,
-        subject:    `New Enquiry: ${safeName} — ${safeUnit}`,
-        from_name:  "Braj Murliwala Residency Website",
-        replyto:    safeEmail,
-        html:       htmlBody,
-        botcheck:   "",
-      }),
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: gmailUser,
+        pass: gmailPass,   // Gmail App Password (not your login password)
+      },
     });
 
-    const result = await res.json() as { success: boolean; message?: string };
-
-    if (!result.success) {
-      console.error("Web3Forms error:", result);
-      return NextResponse.json({ success: false, error: "Failed to send. Please try again." }, { status: 502 });
-    }
+    await transporter.sendMail({
+      from:    `"Braj Murliwala Residency" <${gmailUser}>`,
+      to:      toEmail,
+      replyTo: email.trim(),
+      subject: `New Enquiry: ${safeName} — ${safeUnit}`,
+      html:    htmlBody,
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("Enquiry API error:", err);
-    return NextResponse.json({ success: false, error: "Network error. Please try again." }, { status: 500 });
+    console.error("[enquiry] Gmail SMTP error:", err);
+    return NextResponse.json(
+      { success: false, error: "Failed to send email. Please try again." },
+      { status: 500 }
+    );
   }
 }
