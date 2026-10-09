@@ -10,7 +10,7 @@
  */
 
 // ── CONFIGURE THIS ────────────────────────────────────────────────
-$TO_EMAIL   = "info@brajmurliwala.online"; // change to your email
+$TO_EMAIL   = "Invest2realty@gmail.com";
 $SITE_NAME  = "Braj Murliwala Residency";
 $ALLOWED_ORIGINS = [
     "https://www.brajmurliwala.online",
