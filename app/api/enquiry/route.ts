@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   /* ── Env check ─────────────────────────────────────────────── */
   const gmailUser    = process.env.GMAIL_USER;
   const gmailPass    = process.env.GMAIL_APP_PASSWORD;
-  const toEmail      = process.env.ENQUIRY_TO_EMAIL ?? "Invest2realty@gmail.com";
+  const toEmail      = process.env.ENQUIRY_TO_EMAIL ?? "glocious.smo@gmail.com";
 
   if (!gmailUser || !gmailPass) {
     return NextResponse.json(
